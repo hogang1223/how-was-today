@@ -11,7 +11,7 @@ import SwiftUI
 struct how_was_todayApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            TodaySummaryView()
         }
     }
 }
