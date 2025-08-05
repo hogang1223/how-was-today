@@ -22,7 +22,7 @@ jobs:
 
       # 🛠 Xcode Build
       - name: Build
-          working-directory: ./how-was-today
+        working-directory: ./how-was-today
         run: xcodebuild -scheme how-was-today -destination 'platform=iOS Simulator,name=iPhone 14' clean build
 
       # ✅ Xcode Test
