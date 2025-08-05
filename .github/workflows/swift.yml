@@ -12,23 +12,23 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      
-      # 🔍 SwiftLint (린트 실패해도 진행)
+
+      # 🔍 SwiftLint
       - name: Run SwiftLint
         uses: norio-nomura/action-swiftlint@3.2.1
         with:
           args: --strict
         continue-on-error: true
 
-      # 🛠 Build
+      # 🛠 Xcode Build
       - name: Build
-        run: swift build -v
+        run: xcodebuild -scheme how-was-today -destination 'platform=iOS Simulator,name=iPhone 14' clean build
 
-      # ✅ Test
+      # ✅ Xcode Test
       - name: Run tests
-        run: swift test -v
+        run: xcodebuild -scheme how-was-today -destination 'platform=iOS Simulator,name=iPhone 14' test
 
-      # 📢 실패 시 슬랙 알림
+      # 📢 Slack 실패 알림
       - name: Slack Notification (Failure)
         uses: 8398a7/action-slack@v3
         with:
@@ -38,7 +38,7 @@ jobs:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
         if: failure()
 
-      # 🎉 성공 시 슬랙 알림
+      # 🎉 Slack 성공 알림
       - name: Slack Notification (Success)
         uses: 8398a7/action-slack@v3
         with:
