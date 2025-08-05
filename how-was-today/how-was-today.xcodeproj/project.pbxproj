@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 70;
+	objectVersion = 56;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -165,18 +165,18 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1600;
-				LastUpgradeCheck = 1600;
+				LastSwiftUpdateCheck = 1200;
+				LastUpgradeCheck = 1200;
 				TargetAttributes = {
 					023F21882E3F1B4700501468 = {
-						CreatedOnToolsVersion = 16.0;
+						CreatedOnToolsVersion = 12.0;
 					};
 					023F21982E3F1B4900501468 = {
-						CreatedOnToolsVersion = 16.0;
+						CreatedOnToolsVersion = 12.0;
 						TestTargetID = 023F21882E3F1B4700501468;
 					};
 					023F21A22E3F1B4900501468 = {
-						CreatedOnToolsVersion = 16.0;
+						CreatedOnToolsVersion = 12.0;
 						TestTargetID = 023F21882E3F1B4700501468;
 					};
 				};
