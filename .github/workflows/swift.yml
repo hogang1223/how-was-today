@@ -1,0 +1,49 @@
+name: Swift
+
+on:
+  push:
+    branches: [ "feature/*" ]
+  pull_request:
+    branches: [ "develop" ]
+
+jobs:
+  build:
+    runs-on: macos-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      
+      # 🔍 SwiftLint (린트 실패해도 진행)
+      - name: Run SwiftLint
+        uses: norio-nomura/action-swiftlint@3.2.1
+        with:
+          args: --strict
+        continue-on-error: true
+
+      # 🛠 Build
+      - name: Build
+        run: swift build -v
+
+      # ✅ Test
+      - name: Run tests
+        run: swift test -v
+
+      # 📢 실패 시 슬랙 알림
+      - name: Slack Notification (Failure)
+        uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ job.status }}
+          fields: workflow,job,commit,message,ref,author,took
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        if: failure()
+
+      # 🎉 성공 시 슬랙 알림
+      - name: Slack Notification (Success)
+        uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ job.status }}
+          fields: workflow,job,commit,message,ref,author,took
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        if: success()
