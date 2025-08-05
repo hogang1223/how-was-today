@@ -32,10 +32,10 @@ struct RecentRecordSection: View {
             }
             // 날짜 네비게이션
             HStack {
-                Button(action: {}) {
+                Button(action: {}, label: {
                     Image(systemName: "chevron.left")
                         .foregroundColor(.gray)
-                }
+                })
                 
                 Spacer()
                 
@@ -45,10 +45,10 @@ struct RecentRecordSection: View {
                 
                 Spacer()
                 
-                Button(action: {}) {
+                Button(action: {}, label: {
                     Image(systemName: "chevron.right")
                         .foregroundColor(.gray)
-                }
+                })
             }
             .padding(.horizontal, Metric.padding)
             // 영양제
@@ -79,11 +79,11 @@ struct SupplementSection: View {
                     imageBackgroundColor: Color.supplement,
                     details: "영양제먹기"
                 )
-                Button(action: {}) {
+                Button(action: {}, label: {
                     Image(systemName: "checkmark.square")
                         .font(.system(size: Metric.checkBoxImageSize))
                         .foregroundColor(.placeholder)
-                }
+                })
             }
         }
     }
@@ -107,14 +107,14 @@ struct HealthSection: View {
                 details: "소화불량"
             )
             // 기록하기 버튼
-            Button(action: {}) {
+            Button(action: {}, label: {
                 RecentRecordCardView(
                     systemImageName: "plus",
                     imageBackgroundColor: Color.summaryBackground,
                     imageColor: Color.subTitle,
                     details: "기록 추가하기"
                 )
-            }
+            })
         }
     }
 }
