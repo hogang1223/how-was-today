@@ -11,4 +11,9 @@ extension Color {
     static let main = Color(hex: "#5EC3E8")
     static let summaryBackground = Color(hex: "#F7F6F4")
     static let subTitle = Color(hex: "#666666")
+    static let placeholder =  Color(hex: "#dddddd")
+    
+    // icon tint color
+    static let supplement = Color(hex: "#A3DB91")
+    static let health =  Color(hex: "#756355")
 }

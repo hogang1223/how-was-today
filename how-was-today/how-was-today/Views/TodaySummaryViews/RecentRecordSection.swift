@@ -11,6 +11,15 @@ import SwiftUI
 /// - 영양제
 /// - 건강 및 일상
 ///
+private enum Metric {
+    static let iconImageFrameSize = 36.0
+    static let iconImageSize = 16.0
+    static let checkBoxImageSize = 30.0
+    static let padding = 8.0
+    static let healthSectionSpacing = 20.0
+    static let cardViewSpacing = 12.0
+}
+
 struct RecentRecordSection: View {
     var body: some View {
         VStack(spacing: TodaySummary.Metric.contentPadding) {
@@ -41,12 +50,12 @@ struct RecentRecordSection: View {
                         .foregroundColor(.gray)
                 }
             }
-            .padding(.horizontal, 8)
+            .padding(.horizontal, Metric.padding)
             // 영양제
             SupplementSection()
             // 건강 및 일상
             HealthSection()
-                .padding(.vertical, 8)
+                .padding(.vertical, Metric.padding)
         }
         .padding(TodaySummary.Metric.contentPadding)
         .background(Color.white)
@@ -63,25 +72,17 @@ struct SupplementSection: View {
                 .fontWeight(.semibold)
                 .foregroundColor(Color.subTitle)
             
-            HStack(spacing: 12) {
-                Circle()
-                    .fill(Color(hex: "#A3DB91"))
-                    .frame(width: 36, height: 36)
-                    .overlay(
-                        Image(systemName: "pill.fill")
-                            .foregroundColor(.white)
-                            .font(.system(size: 16))
-                    )
-                
-                VStack(alignment: .leading, spacing: 4) {
-                    Text("비타민, 오메가3, 루테인")
-                        .font(.subheadline)
-                }
-                Spacer()
+            // FIXME: details 데이터 사용자 입력값으로 변경 필요
+            HStack {
+                RecentRecordCardView(
+                    systemImageName: "pill.fill",
+                    imageBackgroundColor: Color.supplement,
+                    details: "영양제먹기"
+                )
                 Button(action: {}) {
                     Image(systemName: "checkmark.square")
-                        .font(.system(size: 30.0))
-                        .foregroundColor(Color(hex: "#dddddd"))
+                        .font(.system(size: Metric.checkBoxImageSize))
+                        .foregroundColor(.placeholder)
                 }
             }
         }
@@ -92,50 +93,70 @@ struct SupplementSection: View {
 
 struct HealthSection: View {
     var body: some View {
-        VStack(alignment: .leading, spacing: 20) {
+        VStack(alignment: .leading, spacing: Metric.healthSectionSpacing) {
             Text("건강 및 일상")
                 .font(.subheadline)
                 .fontWeight(.semibold)
                 .foregroundColor(Color.subTitle)
-            HStack(spacing: 12) {
-                Circle()
-                    .fill(Color(hex: "#756355"))
-                    .frame(width: 36, height: 36)
-                    .overlay(
-                        Image(systemName: "face.smiling.inverse")
-                            .foregroundColor(.white)
-                            .font(.system(size: 16))
-                    )
-                
-                VStack(alignment: .leading, spacing: 4) {
-                    Text("몸 상태 및 기분")
+            
+            // FIXME: 사용자가 입력한 데이터 보여줄 수 있도록 변경 필요
+            RecentRecordCardView(
+                systemImageName: "face.smiling.inverse",
+                imageBackgroundColor: Color.health,
+                categoryTitle: "몸 상태 및 기분",
+                details: "소화불량"
+            )
+            // 기록하기 버튼
+            Button(action: {}) {
+                RecentRecordCardView(
+                    systemImageName: "plus",
+                    imageBackgroundColor: Color.summaryBackground,
+                    imageColor: Color.subTitle,
+                    details: "기록 추가하기"
+                )
+            }
+        }
+    }
+}
+
+struct RecentRecordCardView: View {
+    let systemImageName: String
+    let imageBackgroundColor: Color
+    let imageColor: Color?
+    let categoryTitle: String?
+    let details: String
+    
+    init(systemImageName: String, imageBackgroundColor: Color, imageColor: Color? = nil,
+         categoryTitle: String? = nil, details: String
+    ) {
+        self.systemImageName = systemImageName
+        self.imageBackgroundColor = imageBackgroundColor
+        self.imageColor = imageColor
+        self.categoryTitle = categoryTitle
+        self.details = details
+    }
+    
+    var body: some View {
+        HStack(spacing: Metric.cardViewSpacing) {
+            Circle()
+                .fill(imageBackgroundColor)
+                .frame(width: Metric.iconImageFrameSize, height: Metric.iconImageFrameSize)
+                .overlay(
+                    Image(systemName: systemImageName)
+                        .foregroundColor(imageColor ?? .white)
+                        .font(.system(size: Metric.iconImageSize))
+                )
+            VStack(alignment: .leading, spacing: 4) {
+                if let title = categoryTitle {
+                    Text(title)
                         .font(.caption)
                         .foregroundColor(Color.subTitle)
-                    Text("소화불량")
-                        .font(.subheadline)
-                        .foregroundColor(.black)
                 }
-                Spacer()
+                Text(details)
+                    .font(.subheadline)
+                    .foregroundColor(.black)
             }
-            Button(action: {}) {
-                HStack(spacing: 12) {
-                    Circle()
-                        .fill(Color.summaryBackground)
-                        .frame(width: 36, height: 36)
-                        .overlay(
-                            Image(systemName: "plus")
-                                .foregroundColor(Color.subTitle)
-                                .font(.system(size: 16))
-                        )
-                    
-                    Text("기록 추가하기")
-                        .font(.subheadline)
-                        .foregroundColor(.black)
-                    
-                    Spacer()
-                }
-                .cornerRadius(12)
-            }
+            Spacer()
         }
     }
 }

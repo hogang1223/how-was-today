@@ -7,6 +7,13 @@
 
 import SwiftUI
 
+private enum Metric {
+    static let cardViewRadius = 8.0
+    static let spacing = 8.0
+    static let imageSize = 20.0
+    static let fontSize = 16.0
+}
+
 /// # TodaySummaryView 추천콘텐츠 Section
 /// - 추천콘텐츠, 검색하기 타이틀
 /// - 추천 콘텐츠 카드 뷰
@@ -49,12 +56,12 @@ struct RecommendationCardView: View {
     let title: String
     
     var body: some View {
-        RoundedContainer(cornerRadius: 8.0) {
-            HStack(spacing: 8.0) {
+        RoundedContainer(cornerRadius: Metric.cardViewRadius) {
+            HStack(spacing: Metric.spacing) {
                 Image(systemName: systemImageName)
-                    .font(.system(size: 20.0))
+                    .font(.system(size: Metric.imageSize))
                 Text(title)
-                    .font(.system(size: 16.0))
+                    .font(.system(size: Metric.fontSize))
             }
             .padding(TodaySummary.Metric.contentPadding)
             .background(Color.summaryBackground)

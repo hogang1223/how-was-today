@@ -7,6 +7,9 @@
 
 import SwiftUI
 
+/// # TodaySummary-Metric
+/// - TodaySummaryView 공통 Metric
+///
 enum TodaySummary {
     enum Metric {
         static let contentSpacing = 16.0
@@ -14,6 +17,13 @@ enum TodaySummary {
     }
 }
 
+/// # TodaySummaryView 메인(투데이)탭
+/// - TodayCardSection (오늘 하루 어떤가요)
+/// - ReportCalendarButtonSection(리포트|캘린더)
+/// - TodayQuoteSection (오늘의 명언)
+/// - RecommendationSection(추천컨텐츠)
+/// - RecentRecordSection (최근기록)
+///
 struct TodaySummaryView: View {
     var body: some View {
         NavigationStack {
@@ -36,7 +46,7 @@ struct TodaySummaryView: View {
                         RoundedContainer {
                             ReportCalendarButtonSection()
                         }
-                        // 오늘의 농담
+                        // 오늘의 명언
                         RoundedContainer {
                             TodayQuoteSection()
                         }
@@ -61,6 +71,9 @@ struct TodaySummaryView: View {
 
 // MARK: - 리포트, 캘린더
 
+///# ReportCalendarButtonSection
+/// - TodaySummaryView 메인(투데이)탭의 리포트 캘린더 섹션
+///
 struct ReportCalendarButtonSection: View {
     var body: some View {
         HStack {
@@ -79,6 +92,9 @@ struct ReportCalendarButtonSection: View {
 
 // MARK: - SectionTitleView
 
+///# TodaySummarySectionTitleView
+/// - 최근기록, 추천 콘텐츠 섹션 title View
+///
 struct TodaySummarySectionTitleView: View {
     let title: String
     let buttonTitle: String
@@ -95,8 +111,4 @@ struct TodaySummarySectionTitleView: View {
                 .font(.subheadline)
         }
     }
-}
-
-#Preview {
-    TodaySummaryView()
 }
