@@ -23,10 +23,12 @@ jobs:
       # 🛠 Xcode Build
       - name: Build
         run: xcodebuild -scheme how-was-today -destination 'platform=iOS Simulator,name=iPhone 14' clean build
+        working-directory: ./
 
       # ✅ Xcode Test
       - name: Run tests
         run: xcodebuild -scheme how-was-today -destination 'platform=iOS Simulator,name=iPhone 14' test
+        working-directory: ./
 
       # 📢 Slack 실패 알림
       - name: Slack Notification (Failure)
