@@ -8,10 +8,14 @@ on:
 
 jobs:
   build:
-    runs-on: macos-latest
+    runs-on: macos-14 # ✅ macOS Sonoma 이미지 사용 (Xcode 15.4 포함)
 
     steps:
       - uses: actions/checkout@v4
+
+      # ✅ Xcode 15.4 설정
+      - name: Select Xcode 15.4
+        run: sudo xcode-select -s /Applications/Xcode_15.4.app
 
       # 🔍 SwiftLint
       - name: Run SwiftLint
