@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 56;
+	objectVersion = 70;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -169,20 +169,20 @@
 				LastUpgradeCheck = 1200;
 				TargetAttributes = {
 					023F21882E3F1B4700501468 = {
-						CreatedOnToolsVersion = 12.0;
+						CreatedOnToolsVersion = 14.0;
 					};
 					023F21982E3F1B4900501468 = {
-						CreatedOnToolsVersion = 12.0;
+						CreatedOnToolsVersion = 14.0;
 						TestTargetID = 023F21882E3F1B4700501468;
 					};
 					023F21A22E3F1B4900501468 = {
-						CreatedOnToolsVersion = 12.0;
+						CreatedOnToolsVersion = 14.0;
 						TestTargetID = 023F21882E3F1B4700501468;
 					};
 				};
 			};
 			buildConfigurationList = 023F21842E3F1B4700501468 /* Build configuration list for PBXProject "how-was-today" */;
-			compatibilityVersion = "Xcode 12.0";
+			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
