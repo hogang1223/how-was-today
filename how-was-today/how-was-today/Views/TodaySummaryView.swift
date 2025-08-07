@@ -34,6 +34,7 @@ struct TodaySummaryView: View {
                     .fontWeight(.bold)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.horizontal, TodaySummary.Metric.contentPadding)
+                    .padding(.vertical, 8.0)
             }
             ScrollView(.vertical, showsIndicators: false) {
                 VStack(spacing: TodaySummary.Metric.contentSpacing) {
@@ -62,7 +63,7 @@ struct TodaySummaryView: View {
             }
             .padding(TodaySummary.Metric.contentPadding)
         }
-        .navigationBarHidden(true)
+//        .navigationBarHidden(true)
         .background(Color.summaryBackground)
     }
 }

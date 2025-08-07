@@ -83,6 +83,7 @@ struct RouterView<R: Router>: View {
                 .navigationDestination(for: R.Route.self) { route in
                     router.view(for: route)
                         .environmentObject(router)
+                        .navigationBarHidden(true)
                 }
         }
     }
