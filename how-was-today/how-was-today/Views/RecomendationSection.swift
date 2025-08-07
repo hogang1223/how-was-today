@@ -35,7 +35,7 @@ struct RecommendationSection: View {
             ) {
                 // action
             }
-            ScrollView(.horizontal, showsIndicators: false)  {
+            ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: TodaySummary.Metric.contentSpacing) {
                     ForEach(recommendations, id: \.self) { content in
                         RecommendationCardView(

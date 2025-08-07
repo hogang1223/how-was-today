@@ -16,7 +16,7 @@ struct TodayCardSection: View {
             Image(systemName: "moon.stars.fill")
                 .font(.system(size: 32.0))
                 .foregroundColor(Color.yellow)
-            VStack(spacing:4.0) {
+            VStack(spacing: 4.0) {
                 Text("오늘 하루는 어떤가요?")
                     .font(.title3)
                     .fontWeight(.medium)
@@ -27,13 +27,11 @@ struct TodayCardSection: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
             }
             VStack {
-                Button(action: {
-                    
-                }) {
+                Button(action: {}, label: {
                     Image(systemName: "xmark")
                         .font(.system(size: 14))
                         .foregroundColor(.black)
-                }
+                })
                 .padding(.top, 8)
                 Spacer()
             }

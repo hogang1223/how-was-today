@@ -71,7 +71,7 @@ struct TodaySummaryView: View {
 
 // MARK: - 리포트, 캘린더
 
-///# ReportCalendarButtonSection
+/// # ReportCalendarButtonSection
 /// - TodaySummaryView 메인(투데이)탭의 리포트 캘린더 섹션
 ///
 struct ReportCalendarButtonSection: View {
@@ -92,7 +92,7 @@ struct ReportCalendarButtonSection: View {
 
 // MARK: - SectionTitleView
 
-///# TodaySummarySectionTitleView
+/// # TodaySummarySectionTitleView
 /// - 최근기록, 추천 콘텐츠 섹션 title View
 ///
 struct TodaySummarySectionTitleView: View {
