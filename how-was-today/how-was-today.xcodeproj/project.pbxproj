@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 70;
+	objectVersion = 77;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -35,9 +35,21 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		023F218B2E3F1B4700501468 /* how-was-today */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = "how-was-today"; sourceTree = "<group>"; };
-		023F219C2E3F1B4900501468 /* how-was-todayTests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = "how-was-todayTests"; sourceTree = "<group>"; };
-		023F21A62E3F1B4900501468 /* how-was-todayUITests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = "how-was-todayUITests"; sourceTree = "<group>"; };
+		023F218B2E3F1B4700501468 /* how-was-today */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "how-was-today";
+			sourceTree = "<group>";
+		};
+		023F219C2E3F1B4900501468 /* how-was-todayTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "how-was-todayTests";
+			sourceTree = "<group>";
+		};
+		023F21A62E3F1B4900501468 /* how-was-todayUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "how-was-todayUITests";
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -169,20 +181,19 @@
 				LastUpgradeCheck = 1200;
 				TargetAttributes = {
 					023F21882E3F1B4700501468 = {
-						CreatedOnToolsVersion = 14.0;
+						CreatedOnToolsVersion = 16.0;
 					};
 					023F21982E3F1B4900501468 = {
-						CreatedOnToolsVersion = 14.0;
+						CreatedOnToolsVersion = 16.0;
 						TestTargetID = 023F21882E3F1B4700501468;
 					};
 					023F21A22E3F1B4900501468 = {
-						CreatedOnToolsVersion = 14.0;
+						CreatedOnToolsVersion = 16.0;
 						TestTargetID = 023F21882E3F1B4700501468;
 					};
 				};
 			};
 			buildConfigurationList = 023F21842E3F1B4700501468 /* Build configuration list for PBXProject "how-was-today" */;
-			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -191,6 +202,7 @@
 			);
 			mainGroup = 023F21802E3F1B4700501468;
 			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
 			productRefGroup = 023F218A2E3F1B4700501468 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
