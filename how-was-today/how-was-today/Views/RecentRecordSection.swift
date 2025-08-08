@@ -21,6 +21,8 @@ private enum Metric {
 }
 
 struct RecentRecordSection: View {
+    @EnvironmentObject var router: HowWasTodayRouter
+    
     var body: some View {
         VStack(spacing: TodaySummary.Metric.contentPadding) {
             // 타이틀
@@ -52,7 +54,11 @@ struct RecentRecordSection: View {
             }
             .padding(.horizontal, Metric.padding)
             // 영양제
-            SupplementSection()
+            Button(action: {
+                router.push(.inputSupplement)
+            }, label: {
+                SupplementSection()
+            })
             // 건강 및 일상
             HealthSection()
                 .padding(.vertical, Metric.padding)

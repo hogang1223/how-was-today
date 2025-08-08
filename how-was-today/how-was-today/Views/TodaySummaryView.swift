@@ -26,46 +26,45 @@ enum TodaySummary {
 ///
 struct TodaySummaryView: View {
     var body: some View {
-        NavigationStack {
-            VStack(spacing: 0) {
-                HStack {
-                    Text("How was Today?")
-                        .font(.title)
-                        .foregroundColor(Color.main)
-                        .fontWeight(.bold)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .padding(.horizontal, TodaySummary.Metric.contentPadding)
-                }
-                ScrollView(.vertical, showsIndicators: false) {
-                    VStack(spacing: TodaySummary.Metric.contentSpacing) {
-                        // 오늘 하루 어떤가요
-                        RoundedContainer {
-                            TodayCardSection()
-                        }
-                        // 리포트 캘린더
-                        RoundedContainer {
-                            ReportCalendarButtonSection()
-                        }
-                        // 오늘의 명언
-                        RoundedContainer {
-                            TodayQuoteSection()
-                        }
-                        // 추천컨텐츠
-                        RoundedContainer {
-                            RecommendationSection()
-                        }
-                        // 최근기록
-                        RoundedContainer {
-                            RecentRecordSection()
-                        }
-                    }
-                    .background(Color.clear)
-                }
-                .padding(TodaySummary.Metric.contentPadding)
+        VStack(spacing: 0) {
+            HStack {
+                Text("How was Today?")
+                    .font(.title)
+                    .foregroundColor(Color.main)
+                    .fontWeight(.bold)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.horizontal, TodaySummary.Metric.contentPadding)
+                    .padding(.vertical, 8.0)
             }
-            .navigationBarHidden(true)
-            .background(Color.summaryBackground)
+            ScrollView(.vertical, showsIndicators: false) {
+                VStack(spacing: TodaySummary.Metric.contentSpacing) {
+                    // 오늘 하루 어떤가요
+                    RoundedContainer {
+                        TodayCardSection()
+                    }
+                    // 리포트 캘린더
+                    RoundedContainer {
+                        ReportCalendarButtonSection()
+                    }
+                    // 오늘의 명언
+                    RoundedContainer {
+                        TodayQuoteSection()
+                    }
+                    // 추천컨텐츠
+                    RoundedContainer {
+                        RecommendationSection()
+                    }
+                    // 최근기록
+                    RoundedContainer {
+                        RecentRecordSection()
+                    }
+                }
+                .background(Color.clear)
+            }
+            .padding(TodaySummary.Metric.contentPadding)
         }
+//        .navigationBarHidden(true)
+        .background(Color.summaryBackground)
     }
 }
 
