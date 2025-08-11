@@ -36,12 +36,15 @@ final class SupplementInputViewModel: ObservableObject {
     
     @Published var supplements: [String]
     @Published var alarmEnabled: Bool
-    @Published var alarmTime: Date?
+    @Published var alarmTime: TimeOfDay?
     
     private let supplementRepo: SupplementPlanRepository
+    private let userDefaultsStorage: KeyValueDataStorage
     
-    init(supplementRepo: SupplementPlanRepository) {
+    init(supplementRepo: SupplementPlanRepository, userDefaultsStorage: KeyValueDataStorage) {
         self.supplementRepo = supplementRepo
+        self.userDefaultsStorage = userDefaultsStorage
+        
         self.supplements = []
         self.alarmEnabled = false
         

@@ -19,3 +19,10 @@ protocol DataStorage {
 extension DataStorage {
     func deleteAll(predicate: NSPredicate?) throws {}
 }
+
+protocol KeyValueDataStorage {
+    func setValue<T: Codable>(_ value: T, forKey key: String) throws
+    func getValue<T: Codable>(forKey key: String, as type: T.Type) -> T?
+    func removeValue(forKey key: String) throws
+    func hasValue(forKey key: String) -> Bool
+}

@@ -26,6 +26,9 @@ final class AppDependencies: DependencyContainer {
     /// SupplementInput 화면 ViewModel 생성
     /// - Returns: `SupplementInputViewModel` 인스턴스
     func makeSupplementInputViewModel() -> SupplementInputViewModel {
-        return SupplementInputViewModel(supplementRepo: repositories.supplementPlanRepository)
+        return SupplementInputViewModel(
+            supplementRepo: repositories.supplementPlanRepository,
+            userDefaultsStorage: UserDefaultsStorage.shared
+        )
     }
 }

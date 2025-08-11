@@ -10,7 +10,7 @@ import SwiftUI
 /// # 시간 선택 바텀 시트
 struct TimePickerBottomSheet: View {
     @Binding var isPresented: Bool
-    @Binding var selectedTime: Date? // 외부에서 받은 선택된 시간
+    @Binding var selectedTime: TimeOfDay? // 외부에서 받은 선택된 시간
     @State private var tempSelectedTime = Date() // 임시로 선택하는 시간
     
     var body: some View {
@@ -35,11 +35,10 @@ struct TimePickerBottomSheet: View {
                 DatePicker("", selection: $tempSelectedTime, displayedComponents: .hourAndMinute)
                     .datePickerStyle(WheelDatePickerStyle())
                     .labelsHidden()
-                    .environment(\.locale, Locale(identifier: "ko_KR"))
                     
                 // Confirm Button
                 Button(action: {
-                    selectedTime = tempSelectedTime
+                    selectedTime = TimeOfDay.from(date: tempSelectedTime)
                     isPresented = false
                 }, label: {
                     Text("확인")
@@ -57,7 +56,7 @@ struct TimePickerBottomSheet: View {
         }
         .onAppear {
             if let existingTime = selectedTime {
-                tempSelectedTime = existingTime
+                tempSelectedTime = existingTime.date()
             }
         }
         .presentationCornerRadius(32.0)

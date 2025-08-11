@@ -12,29 +12,12 @@ import SwiftUI
 struct PushNotificationSection: View {
     
     @Binding var isOn: Bool
-    @Binding var time: Date?
+    @Binding var time: TimeOfDay?
     @State private var showTimePickerSheet = false
     
     private enum Metric {
         static let toggleTrailingPadding = 4.0
         static let selectButtonSpacing = 8.0
-    }
-    
-    private var timeFormatter: DateFormatter {
-        let formatter = DateFormatter()
-        
-        // 현재 locale이 24시간제인지 확인
-        let locale = Locale.autoupdatingCurrent
-        let template = DateFormatter.dateFormat(fromTemplate: "j", options: 0, locale: locale)
-        
-        if template?.contains("a") == true {
-            // 12시간제 (오전/오후 표시)
-            formatter.dateFormat = "a h:mm"
-        } else {
-            // 24시간제
-            formatter.dateFormat = "HH:mm"
-        }
-        return formatter
     }
     
     var body: some View {
@@ -66,7 +49,7 @@ struct PushNotificationSection: View {
                     showTimePickerSheet = true
                 }, label: {
                     HStack(spacing: Metric.selectButtonSpacing) {
-                        Text(time == nil ? "선택해주세요" : timeFormatter.string(from: time!))
+                        Text(time?.localizedTimeString() ?? "선택해주세요")
                             .foregroundColor(.main)
                         Image(systemName: "chevron.right")
                             .foregroundColor(.placeholder)
