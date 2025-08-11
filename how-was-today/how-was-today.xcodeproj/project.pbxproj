@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		02D67E202E42117000D051AA /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = 02D67E1F2E42116B00D051AA /* .swiftlint.yml */; };
 		BD8FC6022E45B9A2003FAAAD /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = BD8FC6012E45B9A2003FAAAD /* RealmSwift */; };
+		BD8FC67A2E49A3F9003FAAAD /* RealmSwift in Embed Frameworks */ = {isa = PBXBuildFile; productRef = BD8FC6012E45B9A2003FAAAD /* RealmSwift */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -27,6 +28,20 @@
 			remoteInfo = "how-was-today";
 		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		BD8FC67B2E49A3F9003FAAAD /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				BD8FC67A2E49A3F9003FAAAD /* RealmSwift in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		023F21892E3F1B4700501468 /* how-was-today.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "how-was-today.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -111,6 +126,7 @@
 				023F21862E3F1B4700501468 /* Frameworks */,
 				023F21872E3F1B4700501468 /* Resources */,
 				02D67E212E42127000D051AA /* ShellScript */,
+				BD8FC67B2E49A3F9003FAAAD /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
