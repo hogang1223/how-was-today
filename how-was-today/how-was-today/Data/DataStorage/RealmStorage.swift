@@ -13,7 +13,7 @@ final class RealmStorage<T: Object>: DataStorage {
     typealias ObjectType = T
     private(set) var realm: Realm?
     
-    private init() {
+    init() {
         do {
             self.realm = try Realm()
         } catch {
@@ -22,21 +22,21 @@ final class RealmStorage<T: Object>: DataStorage {
         }
     }
     
-    func save(_ object: T) {
-        create(object)
+    func save(_ object: T) throws {
+        try upsert(object)
     }
     
-    func fetch(predicate: NSPredicate?) -> [T]? {
-        guard let results = fetch(T.self, predicate: predicate) else { return nil }
+    func fetch(predicate: NSPredicate?, sortDescriptors: [NSSortDescriptor]? = nil) throws -> [T]? {
+        guard let results = fetch(T.self, predicate: predicate, sortDescriptors: sortDescriptors) else { return nil }
         return Array(results)
     }
     
-    func delete(_ object: ObjectType) {
-        delete(object: object)
+    func delete(_ object: ObjectType) throws {
+        try delete(object: object)
     }
     
-    func deleteAll(predicate: NSPredicate?) {
-        deleteAll(T.self, filter: predicate)
+    func deleteAll(predicate: NSPredicate?) throws {
+        try deleteAll(T.self, filter: predicate)
     }
 }
 
@@ -45,7 +45,7 @@ final class RealmStorage<T: Object>: DataStorage {
 extension RealmStorage {
     
     /// Create or Update
-    func create(_ object: T, update: Realm.UpdatePolicy = .modified) {
+    private func upsert(_ object: T, update: Realm.UpdatePolicy = .modified) throws {
         guard let realm else { return }
         do {
             try realm.write {
@@ -53,21 +53,33 @@ extension RealmStorage {
             }
         } catch {
             print("❗️Realm 생성/업데이트 실패: \(error)")
+            throw error
         }
     }
     
     /// Read
-    func fetch(_ type: T.Type, predicate: NSPredicate?) -> Results<T>? {
+    private func fetch(_ type: T.Type, predicate: NSPredicate?, sortDescriptors: [NSSortDescriptor]?) -> Results<T>? {
         guard let realm else { return nil }
-        let results = realm.objects(type)
+        var results = realm.objects(type)
+        
         if let filter = predicate {
-            return results.filter(filter)
+            results = results.filter(filter)
+        }
+        
+        if let sort = sortDescriptors, !sort.isEmpty {
+            let realmSort: [RealmSwift.SortDescriptor] = sort.compactMap { desc in
+                guard let key = desc.key else { return nil }
+                return SortDescriptor(keyPath: key, ascending: desc.ascending)
+            }
+            if !realmSort.isEmpty {
+                results = results.sorted(by: realmSort)
+            }
         }
         return results
     }
     
     /// Delete
-    func delete(object: T) {
+    private func delete(object: T) throws {
         guard let realm else { return }
         do {
             try realm.write {
@@ -75,11 +87,12 @@ extension RealmStorage {
             }
         } catch {
             print("❗️Realm 삭제 실패: \(error)")
+            throw error
         }
     }
     
     /// Delete by filtering
-    func deleteAll(_ type: T.Type, filter: NSPredicate? = nil) {
+    func deleteAll(_ type: T.Type, filter: NSPredicate? = nil) throws {
         guard let realm else { return }
         do {
             let objects: Results<T>
@@ -94,6 +107,7 @@ extension RealmStorage {
             }
         } catch {
             print("❗️Realm 일괄 삭제 실패: \(error)")
+            throw error
         }
     }
 }

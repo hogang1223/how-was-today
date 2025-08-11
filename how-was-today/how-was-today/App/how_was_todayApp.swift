@@ -11,7 +11,9 @@ import SwiftUI
 struct how_was_todayApp: App {
     var body: some Scene {
         WindowGroup {
-            RouterView(router: HowWasTodayRouter()) {
+            let repositories = RepositoryContainer()
+            let dependencies = AppDependencies(repositories: repositories)
+            RouterView(router: HowWasTodayRouter(dependencies: dependencies)) {
                 TodaySummaryView()
             }
         }
