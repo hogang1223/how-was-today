@@ -22,3 +22,14 @@ final class SupplementPlan: Object {
     @Persisted var startDate: Date
     @Persisted var supplements: List<String>
 }
+
+
+enum SupplementPlanFactory {
+    static func make(id: String, supplements: [String]) -> SupplementPlan {
+        let p = SupplementPlan()
+        p.id = id
+        p.supplements.removeAll()
+        p.supplements.append(objectsIn: supplements)
+        return p
+    }
+}
