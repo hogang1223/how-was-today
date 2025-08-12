@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		02B9D46D2E4B8E0D001A1FD7 /* TestPlan.xctestplan in Resources */ = {isa = PBXBuildFile; fileRef = 02B9D46C2E4B8E0D001A1FD7 /* TestPlan.xctestplan */; };
 		02D67E202E42117000D051AA /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = 02D67E1F2E42116B00D051AA /* .swiftlint.yml */; };
 		BD8FC6022E45B9A2003FAAAD /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = BD8FC6012E45B9A2003FAAAD /* RealmSwift */; };
 		BD8FC67A2E49A3F9003FAAAD /* RealmSwift in Embed Frameworks */ = {isa = PBXBuildFile; productRef = BD8FC6012E45B9A2003FAAAD /* RealmSwift */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
@@ -57,6 +58,7 @@
 		023F21892E3F1B4700501468 /* how-was-today.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "how-was-today.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		023F21992E3F1B4900501468 /* how-was-todayTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "how-was-todayTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		023F21A32E3F1B4900501468 /* how-was-todayUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "how-was-todayUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		02B9D46C2E4B8E0D001A1FD7 /* TestPlan.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = TestPlan.xctestplan; sourceTree = "<group>"; };
 		02D67E1F2E42116B00D051AA /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -107,6 +109,7 @@
 		023F21802E3F1B4700501468 = {
 			isa = PBXGroup;
 			children = (
+				02B9D46C2E4B8E0D001A1FD7 /* TestPlan.xctestplan */,
 				02D67E1F2E42116B00D051AA /* .swiftlint.yml */,
 				023F218B2E3F1B4700501468 /* how-was-today */,
 				023F219C2E3F1B4900501468 /* how-was-todayTests */,
@@ -260,6 +263,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				02B9D46D2E4B8E0D001A1FD7 /* TestPlan.xctestplan in Resources */,
 				02D67E202E42117000D051AA /* .swiftlint.yml in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -527,7 +531,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 9U3GTR786Y;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.hogang.how-was-todayTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -546,7 +550,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 9U3GTR786Y;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.hogang.how-was-todayTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";

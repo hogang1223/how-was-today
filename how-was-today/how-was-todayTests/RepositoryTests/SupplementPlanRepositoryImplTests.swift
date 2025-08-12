@@ -6,17 +6,15 @@
 //
 
 import Foundation
-import Testing
+import XCTest
 @testable import how_was_today
 
-struct SupplementPlanRepositoryImplTests {
+final class  SupplementPlanRepositoryImplTests: XCTestCase {
     
     private func idDate(_ iso: String) -> Date {
         ISO8601DateFormatter().date(from: iso)!
     }
     
-
-    @Test
     func fetchPlan_returnsLatestOnOrBeforeDate() {
         // Given
         let fake = FakeRealmStorage_SupplementPlan()
@@ -31,10 +29,9 @@ struct SupplementPlanRepositoryImplTests {
         let result = repo.fetchPlan(date: idDate("2025-08-09T00:00:00Z"))
 
         // Then
-        #expect(result.supplements == ["B"])
+        XCTAssertEqual(result.supplements, ["B"])
     }
 
-    @Test
     func savePlan_upsertsById_thenFetchReflectsNew() {
         // Given
         let fake = FakeRealmStorage_SupplementPlan()
@@ -43,14 +40,14 @@ struct SupplementPlanRepositoryImplTests {
         let date = idDate("2025-08-12T00:00:00Z")
 
         // When
-        try? repo.savePlan(Supplement(date: date, supplements: ["G"]))
+        XCTAssertNoThrow(try repo.savePlan(Supplement(date: date, supplements: ["G"])))
+
 
         // Then
         let result = repo.fetchPlan(date: date)
-        #expect(result.supplements == ["G"])
+        XCTAssertEqual(result.supplements, ["G"])
     }
 
-    @Test
     func fetchPlan_returnsEmpty_whenNoPastData() {
         // Given
         let fake = FakeRealmStorage_SupplementPlan()
@@ -61,6 +58,6 @@ struct SupplementPlanRepositoryImplTests {
         let result = repo.fetchPlan(date: idDate("2025-08-09T00:00:00Z"))
 
         // Then
-        #expect(result.supplements.isEmpty)
+        XCTAssertTrue(result.supplements.isEmpty)
     }
 }
