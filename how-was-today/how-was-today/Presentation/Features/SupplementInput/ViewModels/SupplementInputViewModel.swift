@@ -69,9 +69,9 @@ final class SupplementInputViewModel: ObservableObject {
     
     /// 현재 입력값을 영양제 복용 계획으로 저장
     func save() {
-        let nonEmptySupplements = supplements.filter {
-            !$0.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
-        }
+        let nonEmptySupplements = supplements
+            .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
+            .filter { !$0.isEmpty }
         let supplementInfo = Supplement(date: Date(), supplements: nonEmptySupplements)
         do {
             try supplementRepo.savePlan(supplementInfo)
