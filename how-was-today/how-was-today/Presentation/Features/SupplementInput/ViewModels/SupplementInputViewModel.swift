@@ -35,6 +35,8 @@ final class SupplementInputViewModel: ObservableObject {
     private let defaultSupplementCount = 3
     
     @Published var supplements: [String]
+    
+    // FIXME: 알림 관련 로직 개발 필요 (UserDefaults기반으로)
     @Published var alarmEnabled: Bool
     @Published var alarmTime: Date?
     
