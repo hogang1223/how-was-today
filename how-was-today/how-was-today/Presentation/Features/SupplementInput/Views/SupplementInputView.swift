@@ -13,10 +13,10 @@ enum SupplementInput {
     enum Metric {
         static let inputViewSpacing = 40.0
         static let inputViewPadding = 20.0
-        
+
         static let buttonHeight = 50.0
         static let buttonCornerRadius = 12.0
-        
+
         static let sectionSpacing = 20.0
         static let sectionCardSpacing = 12.0
     }
@@ -26,39 +26,18 @@ enum SupplementInput {
 /// - SupplementNameSection (영양제 입력)
 /// - PushNotificationSection (푸시 알림 설정)
 struct SupplementInputView: View {
-    
+
     @EnvironmentObject var router: HowWasTodayRouter
     @StateObject var viewModel: SupplementInputViewModel
     @State private var pendingFocusIndex: Int?
-    
+
     init(viewModelFactory: @escaping () -> SupplementInputViewModel) {
         self._viewModel = StateObject(wrappedValue: viewModelFactory())
     }
-    
+
     var body: some View {
         ZStack {
             VStack {
-                // TODO: NavigationView 따로 분리하기
-                ZStack {
-                    HStack {
-                        Button(action: {
-                            router.pop()
-                        }, label: {
-                            Image(systemName: "chevron.left")
-                                .foregroundColor(.black)
-                                .font(.system(size: 16))
-                        })
-                        Spacer()
-                        Button("초기화") { viewModel.reset() }
-                            .font(.subheadline)
-                            .foregroundColor(viewModel.disableReset ? .gray : .black)
-                            .disabled(viewModel.disableReset)
-                    }
-                    Text("영양제 기록")
-                        .font(.headline)
-                }
-                .frame(height: 44.0)
-                
                 ScrollViewReader { proxy in
                     ScrollView(.vertical, showsIndicators: false) {
                         LazyVStack(spacing: SupplementInput.Metric.inputViewSpacing) {
@@ -71,7 +50,8 @@ struct SupplementInputView: View {
                                     pendingFocusIndex = viewModel.supplements.count - 1
                                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                                         withAnimation {
-                                            proxy.scrollTo(SupplementNameSection.identifier, anchor: .bottom)
+                                            proxy.scrollTo(
+                                                SupplementNameSection.identifier, anchor: .bottom)
                                         }
                                     }
                                 }
@@ -85,7 +65,7 @@ struct SupplementInputView: View {
                         }
                     }
                     .scrollDismissesKeyboard(.immediately)
-                    
+
                 }
             }
             .padding(SupplementInput.Metric.inputViewPadding)
@@ -108,6 +88,12 @@ struct SupplementInputView: View {
                 .padding(.horizontal, SupplementInput.Metric.inputViewPadding)
             }
             .ignoresSafeArea(.keyboard, edges: .bottom)
+        }
+        .appNavigationBar(title: "영양제 기록") {
+            Button("초기화") { viewModel.reset() }
+                .font(.subheadline)
+                .foregroundColor(viewModel.disableReset ? .gray : .black)
+                .disabled(viewModel.disableReset)
         }
     }
 }
