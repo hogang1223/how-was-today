@@ -27,8 +27,8 @@ final class AppDependencies: DependencyContainer {
     /// - Returns: `SupplementInputViewModel` 인스턴스
     func makeSupplementInputViewModel() -> SupplementInputViewModel {
         return SupplementInputViewModel(
-            supplementRepo: repositories.supplementPlanRepository,
-            userDefaultsStorage: UserDefaultsStorage.shared
+            planRepo: repositories.supplementPlanRepository,
+            notifyUseCase: NotifySupplementUseCaseImpl(userDefaults: UserDefaultsStorage.shared)
         )
     }
 }

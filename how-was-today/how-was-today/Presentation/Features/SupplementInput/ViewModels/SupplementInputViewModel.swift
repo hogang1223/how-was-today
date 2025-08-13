@@ -38,17 +38,17 @@ final class SupplementInputViewModel: ObservableObject {
     @Published var alarmEnabled: Bool
     @Published var alarmTime: TimeOfDay?
     
-    private let supplementRepo: SupplementPlanRepository
-    private let userDefaultsStorage: KeyValueDataStorage
+    private let planRepo: SupplementPlanRepository
+    private let notifyUseCase: NotifySupplementUseCase
     
-    init(supplementRepo: SupplementPlanRepository, userDefaultsStorage: KeyValueDataStorage) {
-        self.supplementRepo = supplementRepo
-        self.userDefaultsStorage = userDefaultsStorage
+    init(planRepo: SupplementPlanRepository, notifyUseCase: NotifySupplementUseCase) {
+        self.planRepo = planRepo
+        self.notifyUseCase = notifyUseCase
         
         self.supplements = []
         self.alarmEnabled = false
         
-        loadSupplements()
+        loadDatas()
     }
     
     /// 모든 입력값이 초기 상태이면 Reset 버튼 비활성화
@@ -70,12 +70,14 @@ final class SupplementInputViewModel: ObservableObject {
     
     /// 현재 입력값을 영양제 복용 계획으로 저장
     func save() {
+        // 
+        
         let nonEmptySupplements = supplements.filter {
             !$0.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
         }
         let supplementInfo = Supplement(date: Date(), supplements: nonEmptySupplements)
         do {
-            try supplementRepo.savePlan(supplementInfo)
+            try planRepo.savePlan(supplementInfo)
         } catch {
             print("영양제 기록 저장 실패 \(error.localizedDescription)")
         }
@@ -89,14 +91,25 @@ final class SupplementInputViewModel: ObservableObject {
 
 extension SupplementInputViewModel {
     
+    private func loadDatas() {
+        loadSupplements()
+        loadAlramInformation()
+    }
+    
     /// 저장된 복용 계획 불러오기
     /// - 부족한 입력 칸은 빈 문자열로 채움
     private func loadSupplements() {
-        let supplementInfo = supplementRepo.fetchPlan(date: Date())
+        let supplementInfo = planRepo.fetchPlan(date: Date())
         var newSupplements = supplementInfo.supplements
         while newSupplements.count < defaultSupplementCount {
             newSupplements.append("")
         }
         supplements = newSupplements
+    }
+    
+    private func loadAlramInformation() {
+        guard let time = notifyUseCase.getAlarmTime() else { return }
+        alarmTime = time
+        alarmEnabled = true
     }
 }
