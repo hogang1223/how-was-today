@@ -11,9 +11,9 @@ import SwiftUI
 /// 
 struct PushNotificationSection: View {
     
-    @State private var shouldAddToToday = false
+    @Binding var isOn: Bool
+    @Binding var time: Date?
     @State private var showTimePickerSheet = false
-    @State private var selectedTime: Date?
     
     private enum Metric {
         static let toggleTrailingPadding = 4.0
@@ -46,13 +46,13 @@ struct PushNotificationSection: View {
             HStack {
                 Text("알림")
                 Spacer()
-                Toggle("", isOn: $shouldAddToToday)
+                Toggle("", isOn: $isOn)
                     .toggleStyle(SwitchToggleStyle(tint: .main))
-                    .onChange(of: shouldAddToToday) { newValue in
+                    .onChange(of: isOn) { newValue in
                         if newValue {
                             showTimePickerSheet = true
                         } else {
-                            selectedTime = nil
+                            time = nil
                         }
                     }
                     .padding(.trailing, Metric.toggleTrailingPadding)
@@ -62,11 +62,11 @@ struct PushNotificationSection: View {
                 Text("시간")
                 Spacer()
                 Button(action: {
-                    shouldAddToToday = true
+                    isOn = true
                     showTimePickerSheet = true
                 }, label: {
                     HStack(spacing: Metric.selectButtonSpacing) {
-                        Text(selectedTime == nil ? "선택해주세요" : timeFormatter.string(from: selectedTime!))
+                        Text(time == nil ? "선택해주세요" : timeFormatter.string(from: time!))
                             .foregroundColor(.main)
                         Image(systemName: "chevron.right")
                             .foregroundColor(.placeholder)
@@ -76,7 +76,10 @@ struct PushNotificationSection: View {
             }
         }
         .sheet(isPresented: $showTimePickerSheet) {
-            TimePickerBottomSheet(isPresented: $showTimePickerSheet, selectedTime: $selectedTime)
+            TimePickerBottomSheet(
+                isPresented: $showTimePickerSheet,
+                selectedTime: $time
+            )
         }
     }
 }

@@ -1,0 +1,26 @@
+{
+  "configurations" : [
+    {
+      "id" : "86AE723F-E609-4314-B91D-BDBDD8C239B5",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "codeCoverage" : false,
+    "testTimeoutsEnabled" : true
+  },
+  "testTargets" : [
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:how-was-today.xcodeproj",
+        "identifier" : "023F21982E3F1B4900501468",
+        "name" : "how-was-todayTests"
+      }
+    }
+  ],
+  "version" : 1
+}

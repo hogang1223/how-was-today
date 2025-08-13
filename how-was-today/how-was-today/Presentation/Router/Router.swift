@@ -7,8 +7,18 @@
 
 import SwiftUI
 
-// MARK: - Router Protocol
 
+/// # Router
+/// - NavigationStack 기반의 화면 전환을 추상화하는 프로토콜
+/// - 화면 식별을 위한 `Route` 타입과, 해당 Route에 대응하는 `View`를 생성하는 역할
+///
+/// ## Associated Types
+/// - `Route`: 화면 전환 대상 식별 값 (enum 사용 권장)
+/// - `Content`: 각 Route에 대응하는 SwiftUI View 타입
+///
+/// ## Responsibilities
+/// - push/pop/popToRoot/replace: 화면 이동 액션 제공
+/// - view(for:): 특정 Route에 대응하는 View 생성
 protocol Router: ObservableObject {
     associatedtype Route: Hashable
     associatedtype Content: View
@@ -23,14 +33,29 @@ protocol Router: ObservableObject {
     @ViewBuilder func view(for route: Route) -> Content
 }
 
-// MARK: - HowWasTodayRouter
 
+/// # HowWasTodayRouter
+/// - `how-was-today` 앱의 전역 라우터 구현체
+/// - 화면 전환에 필요한 ViewModel 및 View는 `DependencyContainer`를 통해 주입
+///
+/// ## Route Cases
+/// - `.todaySummary`: 오늘 하루 요약 화면
+/// - `.inputSupplement`: 영양제 입력 화면
+///
+/// ## Notes
+/// - `dependencies`를 통해 필요한 ViewModel Factory를 호출하여 View에 전달
 final class HowWasTodayRouter: Router, ObservableObject {
-    @Published var path = NavigationPath()
     
     enum Route: Hashable {
         case todaySummary
         case inputSupplement
+    }
+    
+    @Published var path = NavigationPath()
+    private let dependencies: DependencyContainer
+    
+    init(dependencies: DependencyContainer) {
+        self.dependencies = dependencies
     }
     
     // MARK: - Navigation Actions
@@ -61,12 +86,22 @@ final class HowWasTodayRouter: Router, ObservableObject {
         case .todaySummary:
             TodaySummaryView()
         case .inputSupplement:
-            SupplementInputView()
+            SupplementInputView(viewModelFactory: dependencies.makeSupplementInputViewModel)
         }
     }
 }
 
-// MARK: - RouterView (Generic Router Container)
+/// # RouterView
+/// - 특정 Router 구현체를 감싸는 제네릭 네비게이션 컨테이너
+/// - NavigationStack과 Router를 결합하여 화면 전환 로직을 단일 지점에서 처리
+///
+/// ## Parameters
+/// - `router`: 사용할 Router 구현체
+/// - `rootView`: 첫 화면으로 표시할 View
+///
+/// ## Notes
+/// - `environmentObject(router)`를 사용하여 하위 View에서 Router 액션 호출 가능
+/// - `navigationDestination(for:)`를 통해 Route 기반 화면 전환 처리
 struct RouterView<R: Router>: View {
     @StateObject private var router: R
     private let rootView: AnyView
@@ -83,7 +118,6 @@ struct RouterView<R: Router>: View {
                 .navigationDestination(for: R.Route.self) { route in
                     router.view(for: route)
                         .environmentObject(router)
-                        .navigationBarHidden(true)
                 }
         }
     }
