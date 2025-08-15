@@ -52,9 +52,7 @@ final class SupplementPlanRepositoryImpl<
     }
     
     func savePlan(_ supplement: Supplement) throws {
-        guard let startDate = supplement.date else {
-            return
-        }
+        let startDate = supplement.date
         
         let plan = SupplementPlan()
         plan.id = startDate.toString(format: Supplement.dateFormat)

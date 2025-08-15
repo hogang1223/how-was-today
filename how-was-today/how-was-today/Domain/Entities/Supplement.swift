@@ -11,7 +11,7 @@ struct Supplement {
     
     static let dateFormat = "yyyy-MM-dd"
     
-    var date: Date?
+    var date: Date
     var names: [String]
     var isTaken: Bool = false
 }

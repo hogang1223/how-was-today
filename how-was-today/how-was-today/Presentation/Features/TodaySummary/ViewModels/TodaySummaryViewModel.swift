@@ -24,7 +24,5 @@ final class TotalSummaryViewModel: ObservableObject {
     
     private func loadSupplement() {
         
-        
-        
     }
 }
