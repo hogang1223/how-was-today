@@ -29,7 +29,7 @@ final class  SupplementPlanRepositoryImplTests: XCTestCase {
         let result = repo.fetchPlan(date: idDate("2025-08-09T00:00:00Z"))
 
         // Then
-        XCTAssertEqual(result.supplements, ["B"])
+        XCTAssertEqual(result.names, ["B"])
     }
 
     func savePlan_upsertsById_thenFetchReflectsNew() {
@@ -45,7 +45,7 @@ final class  SupplementPlanRepositoryImplTests: XCTestCase {
 
         // Then
         let result = repo.fetchPlan(date: date)
-        XCTAssertEqual(result.supplements, ["G"])
+        XCTAssertEqual(result.names, ["G"])
     }
 
     func fetchPlan_returnsEmpty_whenNoPastData() {
@@ -58,6 +58,6 @@ final class  SupplementPlanRepositoryImplTests: XCTestCase {
         let result = repo.fetchPlan(date: idDate("2025-08-09T00:00:00Z"))
 
         // Then
-        XCTAssertTrue(result.supplements.isEmpty)
+        XCTAssertTrue(result.names.isEmpty)
     }
 }

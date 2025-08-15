@@ -1,5 +1,5 @@
 //
-//  SupplementPlan.swift
+//  Supplement.swift
 //  how-was-today
 //
 //  Created by hogang on 8/10/25.
@@ -12,5 +12,6 @@ struct Supplement {
     static let dateFormat = "yyyy-MM-dd"
     
     var date: Date?
-    var supplements: [String]
+    var names: [String]
+    var isTaken: Bool = false
 }
