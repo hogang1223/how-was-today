@@ -23,7 +23,6 @@ final class SupplementPlan: Object {
     @Persisted var names: List<String>
 }
 
-
 enum SupplementPlanFactory {
     static func make(id: String, supplements: [String]) -> SupplementPlan {
         let p = SupplementPlan()

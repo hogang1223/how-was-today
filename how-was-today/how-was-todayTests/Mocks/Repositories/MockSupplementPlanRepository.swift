@@ -11,7 +11,7 @@ import Foundation
 final class MockSupplementPlanRepository: SupplementPlanRepository {
     // Stub
     var stubFetchById: [String: Supplement] = [:]
-    var defaultFetch: Supplement = Supplement(date: nil, supplements: [])
+    var defaultFetch: Supplement = Supplement(date: nil, names: [])
     var saveError: Error?
 
     // Capture

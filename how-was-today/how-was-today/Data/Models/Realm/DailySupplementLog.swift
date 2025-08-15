@@ -21,3 +21,12 @@ final class DailySupplementLog: Object {
     @Persisted var date: Date
     @Persisted var isTaken: Bool
 }
+
+enum DailySupplementLogFactory {
+    static func make(id: String, isTaken: Bool) -> DailySupplementLog {
+        let p = DailySupplementLog()
+        p.id = id
+        p.isTaken = isTaken
+        return p
+    }
+}

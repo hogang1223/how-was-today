@@ -19,7 +19,7 @@ struct SupplementInputViewModelFactoryForTests {
     func stubRepo(_ items: [String], date: Date? = nil) {
         let d = date ?? Date()
         repo.setStub(
-            Supplement(date: d, supplements: items),
+            Supplement(date: d, names: items),
             for: d
         )
     }
