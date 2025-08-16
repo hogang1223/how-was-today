@@ -7,22 +7,44 @@
 
 import Foundation
 
-final class TotalSummaryViewModel: ObservableObject {
+struct SupplementUseCaseFactory {
+    let makeFetch: () -> FetchSupplementUseCase
+    let makeToggle: () -> ToggleSupplementTakenUseCase
+}
+
+final class TodaySummaryViewModel: ObservableObject {
     
     @Published var supplement: Supplement
+    @Published var date: Date
+
+    private let factory: SupplementUseCaseFactory
     
-    private let supplementRepo: SupplementPlanRepository
-    
-    init(supplementRepo: SupplementPlanRepository) {
-        self.supplementRepo = supplementRepo
+    init(factory: SupplementUseCaseFactory) {
+        self.factory = factory
         
-        self.supplement = Supplement(date: Date(), names: [])
+        let now = Date()
+        self.date = now
+        self.supplement = Supplement(date: now, names: [])
         
         loadSupplement()
     }
+}
+
+// MARK: - Supplement
+
+extension TodaySummaryViewModel {
+    func loadSupplement() {
+        let uc = factory.makeFetch()
+        supplement = uc.execute(date: date)
+    }
     
-    
-    private func loadSupplement() {
-        
+    func toggleSupplementIsTaken(_ isTaken: Bool) {
+        let uc = factory.makeToggle()
+        do {
+            try uc.execute(date: date, isTaken: isTaken)
+            supplement.isTaken = isTaken
+        } catch {
+            print("toggle Supplement is taken error \(error.localizedDescription)")
+        }
     }
 }

@@ -23,4 +23,8 @@ final class RepositoryContainer {
     lazy var supplementPlanRepository: SupplementPlanRepository = SupplementPlanRepositoryImpl(
         storage: RealmStorage<SupplementPlan>()
     )
+    
+    lazy var dailySupplementRepository: DailySupplementLogRepository = DailySupplementLogRepositoryImpl(
+        storage: RealmStorage<DailySupplementLog>()
+    )
 }

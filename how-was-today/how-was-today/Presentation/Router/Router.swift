@@ -84,7 +84,7 @@ final class HowWasTodayRouter: Router, ObservableObject {
     func view(for route: Route) -> some View {
         switch route {
         case .todaySummary:
-            TodaySummaryView()
+            TodaySummaryView(viewModelFactory: self.dependencies.makeTodaySummaryViewModel)
         case .inputSupplement:
             SupplementInputView(viewModelFactory: dependencies.makeSupplementInputViewModel)
         }
