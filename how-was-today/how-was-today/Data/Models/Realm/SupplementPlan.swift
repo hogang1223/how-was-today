@@ -20,16 +20,15 @@ import Foundation
 final class SupplementPlan: Object {
     @Persisted(primaryKey: true) var id: String
     @Persisted var startDate: Date
-    @Persisted var supplements: List<String>
+    @Persisted var names: List<String>
 }
-
 
 enum SupplementPlanFactory {
     static func make(id: String, supplements: [String]) -> SupplementPlan {
         let p = SupplementPlan()
         p.id = id
-        p.supplements.removeAll()
-        p.supplements.append(objectsIn: supplements)
+        p.names.removeAll()
+        p.names.append(objectsIn: supplements)
         return p
     }
 }

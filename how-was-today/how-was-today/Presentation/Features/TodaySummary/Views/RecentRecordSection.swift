@@ -21,7 +21,9 @@ private enum Metric {
 }
 
 struct RecentRecordSection: View {
+    
     @EnvironmentObject var router: HowWasTodayRouter
+    @ObservedObject var viewModel: TodaySummaryViewModel
     
     var body: some View {
         VStack(spacing: TodaySummary.Metric.contentPadding) {
@@ -57,7 +59,16 @@ struct RecentRecordSection: View {
             Button(action: {
                 router.push(.inputSupplement)
             }, label: {
-                SupplementSection()
+                SupplementSection(
+                    supplements: Binding(
+                        get: { viewModel.supplement.names },
+                        set: { viewModel.supplement.names = $0 }
+                    ),
+                    isSelected: Binding(
+                        get: { viewModel.supplement.isTaken },
+                        set: { viewModel.toggleSupplementIsTaken($0) }
+                    )
+                )
             })
             // 건강 및 일상
             HealthSection()
@@ -71,6 +82,9 @@ struct RecentRecordSection: View {
 // MARK: - 영양제 섹션
 
 struct SupplementSection: View {
+    @Binding var supplements: [String]
+    @Binding var isSelected: Bool
+    
     var body: some View {
         VStack(alignment: .leading, spacing: TodaySummary.Metric.contentSpacing) {
             Text("영양제")
@@ -78,17 +92,18 @@ struct SupplementSection: View {
                 .fontWeight(.semibold)
                 .foregroundColor(Color.subTitle)
             
-            // FIXME: details 데이터 사용자 입력값으로 변경 필요
             HStack {
                 RecentRecordCardView(
                     systemImageName: "pill.fill",
                     imageBackgroundColor: Color.supplement,
-                    details: "영양제먹기"
+                    details: supplements.isEmpty ? "영양제먹기" : supplements.joined(separator: ", ")
                 )
-                Button(action: {}, label: {
-                    Image(systemName: "checkmark.square")
+                Button(action: {
+                    isSelected.toggle()
+                }, label: {
+                    Image(systemName: isSelected ? "checkmark.square.fill" : "checkmark.square")
                         .font(.system(size: Metric.checkBoxImageSize))
-                        .foregroundColor(.placeholder)
+                        .foregroundColor(isSelected ? .green : .placeholder)
                 })
             }
         }

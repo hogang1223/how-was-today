@@ -19,7 +19,7 @@ struct SupplementInputViewModelFactoryForTests {
     func stubRepo(_ items: [String], date: Date? = nil) {
         let d = date ?? Date()
         repo.setStub(
-            Supplement(date: d, supplements: items),
+            Supplement(date: d, names: items),
             for: d
         )
     }
@@ -86,7 +86,7 @@ final class SupplementInputViewModelTests: XCTestCase {
         vm.save()
         // Then
         XCTAssertEqual(mock.saveCalledWith.count, 1)
-        XCTAssertEqual(mock.saveCalledWith.first?.supplements, ["비타민D", "마그네슘"])
+        XCTAssertEqual(mock.saveCalledWith.first?.names, ["비타민D", "마그네슘"])
     }
 
     // 4) loadSupplements()

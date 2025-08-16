@@ -9,16 +9,11 @@ import Foundation
 @testable import how_was_today
 
 /// RealmStorage<SupplementPlan>을 대체하는 테스트용 Fake.
-/// 메모리에 SupplementPlan을 저장/조회합니다.
+/// 메모리에 SupplementPlan을 저장/조회.
 final class FakeRealmStorage_SupplementPlan {
 
     // In-memory 저장소 (id를 key로 관리)
     private var store: [String: SupplementPlan] = [:]
-
-    // 테스트 검증용 캡처
-    private(set) var lastFetchPredicate: NSPredicate?
-    private(set) var lastFetchSortDescriptors: [NSSortDescriptor]?
-    private(set) var saveCalledCount: Int = 0
 
     /// 편의: (id, [supplements]) 리스트로 시드 주입
     @discardableResult
@@ -38,13 +33,14 @@ extension FakeRealmStorage_SupplementPlan: DataStorage {
     /// RepoImpl에서 쓰는 형태를 흉내냅니다.
     /// - Returns: 조건/정렬에 맞는 배열. 없으면 빈 배열.
     func fetch(predicate: NSPredicate?, sortDescriptors: [NSSortDescriptor]?) throws -> [SupplementPlan]? {
-        lastFetchPredicate = predicate
-        lastFetchSortDescriptors = sortDescriptors
 
         var items = Array(store.values)
         
-        if let idLimit = extractIdLimit(from: predicate) {
-            items = items.filter { $0.id <= idLimit }
+//        if let idLimit = extractIdLimit(from: predicate) {
+//            items = items.filter { $0.id <= idLimit }
+//        }
+        if let predicate = predicate {
+            items = items.filter { predicate.evaluate(with: $0) }
         }
 
         if let sort = sortDescriptors, !sort.isEmpty {
@@ -59,7 +55,6 @@ extension FakeRealmStorage_SupplementPlan: DataStorage {
 
     /// 동일 id는 upsert로 가정
     func save(_ object: SupplementPlan) throws {
-        saveCalledCount += 1
         store[object.id] = object
     }
 

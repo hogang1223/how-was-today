@@ -11,7 +11,6 @@ import Foundation
 final class MockSupplementPlanRepository: SupplementPlanRepository {
     // Stub
     var stubFetchById: [String: Supplement] = [:]
-    var defaultFetch: Supplement = Supplement(date: nil, supplements: [])
     var saveError: Error?
 
     // Capture
@@ -30,7 +29,7 @@ final class MockSupplementPlanRepository: SupplementPlanRepository {
     func fetchPlan(date: Date) -> Supplement {
         fetchCalledWith.append(date)
         let id = df.string(from: date)
-        return stubFetchById[id] ?? defaultFetch
+        return stubFetchById[id] ?? Supplement(date: date, names: [])
     }
 
     func savePlan(_ plan: Supplement) throws {

@@ -22,10 +22,42 @@ final class AppDependencies: DependencyContainer {
     init(repositories: RepositoryContainer) {
         self.repositories = repositories
     }
+}
+
+// MARK: - ViewModels
+
+extension AppDependencies {
     
-    /// SupplementInput 화면 ViewModel 생성
-    /// - Returns: `SupplementInputViewModel` 인스턴스
+    /// TodaySummaryView ViewModel 생성
+    func makeTodaySummaryViewModel() -> TodaySummaryViewModel {
+        return TodaySummaryViewModel(
+            factory: makeSupplementUseCaseFactory()
+        )
+    }
+    
+    /// SupplementInputView ViewModel 생성
     func makeSupplementInputViewModel() -> SupplementInputViewModel {
         return SupplementInputViewModel(supplementRepo: repositories.supplementPlanRepository)
+    }
+}
+
+// MARK: - UseCases
+
+extension AppDependencies {
+    
+    func makeSupplementUseCaseFactory() -> SupplementUseCaseFactory {
+        return SupplementUseCaseFactory(
+            makeFetch: {
+                FetchSupplementUseCaseImpl(
+                    planRepo: self.repositories.supplementPlanRepository,
+                    logRepo: self.repositories.dailySupplementRepository
+                )
+            },
+            makeToggle: {
+                ToggleSupplementTakenUseCaseImpl(
+                    logRepo: self.repositories.dailySupplementRepository
+                )
+            }
+        )
     }
 }

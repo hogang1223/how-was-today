@@ -15,7 +15,7 @@ final class  SupplementPlanRepositoryImplTests: XCTestCase {
         ISO8601DateFormatter().date(from: iso)!
     }
     
-    func fetchPlan_returnsLatestOnOrBeforeDate() {
+    func test_fetchPlan_returnsLatestOnOrBeforeDate() {
         // Given
         let fake = FakeRealmStorage_SupplementPlan()
             .seed([
@@ -29,10 +29,10 @@ final class  SupplementPlanRepositoryImplTests: XCTestCase {
         let result = repo.fetchPlan(date: idDate("2025-08-09T00:00:00Z"))
 
         // Then
-        XCTAssertEqual(result.supplements, ["B"])
+        XCTAssertEqual(result.names, ["B"])
     }
 
-    func savePlan_upsertsById_thenFetchReflectsNew() {
+    func test_savePlan_upsertsById_thenFetchReflectsNew() {
         // Given
         let fake = FakeRealmStorage_SupplementPlan()
             .seed([("2025-08-12", ["D", "E", "F"])])
@@ -40,15 +40,18 @@ final class  SupplementPlanRepositoryImplTests: XCTestCase {
         let date = idDate("2025-08-12T00:00:00Z")
 
         // When
-        XCTAssertNoThrow(try repo.savePlan(Supplement(date: date, supplements: ["G"])))
-
-
+        XCTAssertNoThrow(
+            try repo.savePlan(
+                Supplement(date: date, names: ["G"])
+            )
+        )
+        
         // Then
         let result = repo.fetchPlan(date: date)
-        XCTAssertEqual(result.supplements, ["G"])
+        XCTAssertEqual(result.names, ["G"])
     }
 
-    func fetchPlan_returnsEmpty_whenNoPastData() {
+    func test_fetchPlan_returnsEmpty_whenNoPastData() {
         // Given
         let fake = FakeRealmStorage_SupplementPlan()
             .seed([("2025-08-10", ["A"])])
@@ -58,6 +61,6 @@ final class  SupplementPlanRepositoryImplTests: XCTestCase {
         let result = repo.fetchPlan(date: idDate("2025-08-09T00:00:00Z"))
 
         // Then
-        XCTAssertTrue(result.supplements.isEmpty)
+        XCTAssertTrue(result.names.isEmpty)
     }
 }

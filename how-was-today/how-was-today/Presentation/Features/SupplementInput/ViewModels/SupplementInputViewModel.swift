@@ -72,7 +72,7 @@ final class SupplementInputViewModel: ObservableObject {
         let nonEmptySupplements = supplements
             .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
             .filter { !$0.isEmpty }
-        let supplementInfo = Supplement(date: Date(), supplements: nonEmptySupplements)
+        let supplementInfo = Supplement(date: Date(), names: nonEmptySupplements)
         do {
             try supplementRepo.savePlan(supplementInfo)
         } catch {
@@ -92,7 +92,7 @@ extension SupplementInputViewModel {
     /// - 부족한 입력 칸은 빈 문자열로 채움
     private func loadSupplements() {
         let supplementInfo = supplementRepo.fetchPlan(date: Date())
-        var newSupplements = supplementInfo.supplements
+        var newSupplements = supplementInfo.names
         while newSupplements.count < defaultSupplementCount {
             newSupplements.append("")
         }

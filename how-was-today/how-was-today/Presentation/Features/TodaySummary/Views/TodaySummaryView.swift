@@ -25,6 +25,13 @@ enum TodaySummary {
 /// - RecentRecordSection (최근기록)
 ///
 struct TodaySummaryView: View {
+    
+    @StateObject var viewModel: TodaySummaryViewModel
+    
+    init(viewModelFactory: @escaping () -> TodaySummaryViewModel) {
+        self._viewModel = StateObject(wrappedValue: viewModelFactory())
+    }
+    
     var body: some View {
         VStack(spacing: 0) {
             HStack {
@@ -56,15 +63,17 @@ struct TodaySummaryView: View {
                     }
                     // 최근기록
                     RoundedContainer {
-                        RecentRecordSection()
+                        RecentRecordSection(viewModel: viewModel)
                     }
                 }
                 .background(Color.clear)
             }
             .padding(TodaySummary.Metric.contentPadding)
         }
-//        .navigationBarHidden(true)
         .background(Color.summaryBackground)
+        .onAppear {
+            viewModel.loadSupplement()
+        }
     }
 }
 

@@ -8,27 +8,22 @@ on:
 
 jobs:
   build:
-    runs-on: macos-15
+    runs-on: macos-latest
 
     steps:
       - uses: actions/checkout@v4
-      
-      # ✅ Xcode 16 설정
-      - name: Select Xcode 16
+
+      # ✅ Xcode 16.x를 강제 선택 (항상 최신 16.x)
+      - name: Select latest Xcode 16.x
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: '16'   # '16'이면 가장 최신 16.x을 선택
+
+      # 확인용 출력
+      - name: Show Xcode and SDKs
         run: |
-          ls /Applications/ | grep Xcode
-          
-          if [ -d "/Applications/Xcode_16.0.app" ]; then
-              sudo xcode-select -s /Applications/Xcode_16.0.app
-              echo "Using Xcode 16.0"
-          elif [ -d "/Applications/Xcode_16.1.app" ]; then
-              sudo xcode-select -s /Applications/Xcode_16.1.app
-              echo "Using Xcode 16.1"
-          else
-              echo "Using default Xcode (hopefully 16+)"
-          fi
-          
           xcodebuild -version
+          xcodebuild -showsdks
 
       # 🔍 SwiftLint
       - name: Run SwiftLint
@@ -37,15 +32,15 @@ jobs:
           args: --strict
         continue-on-error: true
 
-      # 🛠 Xcode Build
+      # 🛠 Build
       - name: Build
         working-directory: ./how-was-today
-        run: xcodebuild -scheme how-was-today -destination 'platform=iOS Simulator,name=iPhone 16' clean build
+        run: xcodebuild -scheme how-was-today -destination 'generic/platform=iOS Simulator' clean build
 
-      # ✅ Xcode Test
+      # ✅ Test
       - name: Run tests
         working-directory: ./how-was-today
-        run: xcodebuild -scheme how-was-today -destination 'platform=iOS Simulator,name=iPhone 16' test
+        run: xcodebuild -scheme how-was-today -destination 'platform=iOS Simulator,name=iPhone 16 Pro' test
 
       # 📢 Slack 실패 알림
       - name: Slack Notification (Failure)

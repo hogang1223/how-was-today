@@ -14,7 +14,7 @@ struct how_was_todayApp: App {
             let repositories = RepositoryContainer()
             let dependencies = AppDependencies(repositories: repositories)
             RouterView(router: HowWasTodayRouter(dependencies: dependencies)) {
-                TodaySummaryView()
+                TodaySummaryView(viewModelFactory: dependencies.makeTodaySummaryViewModel)
             }
         }
     }

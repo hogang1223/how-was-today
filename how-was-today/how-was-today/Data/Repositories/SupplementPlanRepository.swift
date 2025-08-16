@@ -34,7 +34,7 @@ final class SupplementPlanRepositoryImpl<
     }
     
     func fetchPlan(date: Date) -> Supplement {
-        var supplement = Supplement(date: date, supplements: [])
+        var supplement = Supplement(date: date, names: [])
         let id = date.toString(format: Supplement.dateFormat)
         let predicate = NSPredicate(format: "id <= %@", id)
         do {
@@ -43,7 +43,7 @@ final class SupplementPlanRepositoryImpl<
                 sortDescriptors: [NSSortDescriptor(key: "id", ascending: false)]
             )
             if let nearest = data?.first {
-                supplement.supplements = Array(nearest.supplements)
+                supplement.names = Array(nearest.names)
             }
         } catch {
             print("fetch plan data error = \(error.localizedDescription)")
@@ -52,14 +52,12 @@ final class SupplementPlanRepositoryImpl<
     }
     
     func savePlan(_ supplement: Supplement) throws {
-        guard let startDate = supplement.date else {
-            return
-        }
+        let startDate = supplement.date
         
         let plan = SupplementPlan()
         plan.id = startDate.toString(format: Supplement.dateFormat)
         plan.startDate = startDate
-        plan.supplements.append(objectsIn: supplement.supplements)
+        plan.names.append(objectsIn: supplement.names)
         try storage.save(plan)
     }
 }
