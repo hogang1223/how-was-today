@@ -113,6 +113,9 @@ struct SupplementSection: View {
 // MARK: - 건강 및 일상 섹션
 
 struct HealthSection: View {
+    
+    @EnvironmentObject var router: HowWasTodayRouter
+    
     var body: some View {
         VStack(alignment: .leading, spacing: Metric.healthSectionSpacing) {
             Text("건강 및 일상")
@@ -128,7 +131,9 @@ struct HealthSection: View {
                 details: "소화불량"
             )
             // 기록하기 버튼
-            Button(action: {}, label: {
+            Button(action: {
+                router.present(.dailyRecord)
+            }, label: {
                 RecentRecordCardView(
                     systemImageName: "plus",
                     imageBackgroundColor: Color.summaryBackground,

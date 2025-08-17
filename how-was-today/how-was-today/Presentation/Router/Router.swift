@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-
 /// # Router
 /// - NavigationStack 기반의 화면 전환을 추상화하는 프로토콜
 /// - 화면 식별을 위한 `Route` 타입과, 해당 Route에 대응하는 `View`를 생성하는 역할
@@ -33,6 +32,15 @@ protocol Router: ObservableObject {
     @ViewBuilder func view(for route: Route) -> Content
 }
 
+protocol ModalRouter: Router {
+    associatedtype Modal: Identifiable
+    var modal: Modal? { get set }
+    
+    func present(_ modal: Modal)
+    func dismissModal()
+    func modalView(for modal: Modal) -> AnyView
+}
+
 
 /// # HowWasTodayRouter
 /// - `how-was-today` 앱의 전역 라우터 구현체
@@ -44,22 +52,31 @@ protocol Router: ObservableObject {
 ///
 /// ## Notes
 /// - `dependencies`를 통해 필요한 ViewModel Factory를 호출하여 View에 전달
-final class HowWasTodayRouter: Router, ObservableObject {
+final class HowWasTodayRouter: ObservableObject {
     
     enum Route: Hashable {
         case todaySummary
         case inputSupplement
     }
     
+    enum Modal: String, Identifiable {
+        case dailyRecord
+        case weight
+        
+        var id: String { self.rawValue }
+    }
+    
     @Published var path = NavigationPath()
+    @Published var modal: Modal?
+
     private let dependencies: DependencyContainer
     
     init(dependencies: DependencyContainer) {
         self.dependencies = dependencies
     }
-    
-    // MARK: - Navigation Actions
-    
+}
+
+extension HowWasTodayRouter: Router {
     func push(_ route: Route) {
         path.append(route)
     }
@@ -78,8 +95,6 @@ final class HowWasTodayRouter: Router, ObservableObject {
         path.append(route)
     }
     
-    // MARK: - View Factory
-    
     @ViewBuilder
     func view(for route: Route) -> some View {
         switch route {
@@ -87,6 +102,28 @@ final class HowWasTodayRouter: Router, ObservableObject {
             TodaySummaryView(viewModelFactory: self.dependencies.makeTodaySummaryViewModel)
         case .inputSupplement:
             SupplementInputView(viewModelFactory: dependencies.makeSupplementInputViewModel)
+        }
+    }
+}
+
+extension HowWasTodayRouter: ModalRouter {
+    
+    func present(_ modal: Modal) {
+        self.modal = modal
+        print(modal.id)
+    }
+    
+    func dismissModal() {
+        self.modal = nil
+    }
+    
+    func modalView(for modal: Modal) -> AnyView {
+        switch modal {
+        case .dailyRecord:
+            return AnyView(DailyRecordBottomSheet())
+        case .weight:
+            return AnyView(WeightRecordBottomSheet()
+            )
         }
     }
 }
@@ -110,15 +147,28 @@ struct RouterView<R: Router>: View {
         self._router = StateObject(wrappedValue: router)
         self.rootView = AnyView(rootView())
     }
-    
+
     var body: some View {
-        NavigationStack(path: $router.path) {
+        let stack = NavigationStack(path: $router.path) {
             rootView
                 .environmentObject(router)
                 .navigationDestination(for: R.Route.self) { route in
                     router.view(for: route)
                         .environmentObject(router)
                 }
+        }
+        
+        if let modalRouter = router as? HowWasTodayRouter {
+            stack.sheet(item: Binding<HowWasTodayRouter.Modal?>(
+                get: { modalRouter.modal },
+                set: { modalRouter.modal = $0 }
+            )) { modal in
+                modalRouter.modalView(for: modal)
+                    .presentationCornerRadius(BottomSheet.Metric.cornerRadius)
+                    .environmentObject(modalRouter)
+            }
+        } else {
+            stack
         }
     }
 }
