@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct MoodFeature: DailyRecordFeature {
-    var id = "mood"
+    var id = DailyRecord.mood
     
     var title: String = "기분"
     

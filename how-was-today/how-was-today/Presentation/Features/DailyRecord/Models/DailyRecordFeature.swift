@@ -6,20 +6,37 @@
 //
 import SwiftUI
 
-protocol DailyRecordFeature: Identifiable {
-    var id: String { get }
-    var title: String { get }
-    var systemImageName: String { get }
-    var imageColor: Color { get }
-    var route: HowWasTodayRouter.Route? { get }
-    var modal: HowWasTodayRouter.Modal? { get }
-}
-
-enum DailyRecordRegistry {
+enum DailyRecord: String, CaseIterable {
+    case weight
+    case condition
+    case mood
+    case memo
+    
+    static let dateFormat = "yyyy-MM-dd"
+    
     static let all: [any DailyRecordFeature] = [
         WeightFeature(),
         ConditionFeature(),
         MoodFeature(),
         MemoFeature()
     ]
+}
+
+protocol DailyRecordFeature: Identifiable {
+    var id: DailyRecord { get }
+    var title: String { get }
+    var systemImageName: String { get }
+    var imageColor: Color { get }
+    
+    func getRoute(date: Date) -> HowWasTodayRouter.Route?
+    func getModal(date: Date) -> HowWasTodayRouter.Modal?
+}
+
+extension DailyRecordFeature {
+    func getRoute(date: Date) -> HowWasTodayRouter.Route? {
+        nil
+    }
+    func getModal(date: Date) -> HowWasTodayRouter.Modal? {
+        nil
+    }
 }

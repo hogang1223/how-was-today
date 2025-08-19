@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct MemoFeature: DailyRecordFeature {
-    var id = "memo"
+    var id = DailyRecord.memo
     
     var title: String = "메모"
     

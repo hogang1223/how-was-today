@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct WeightFeature: DailyRecordFeature {
-    var id = "weight"
+    var id = DailyRecord.weight
     
     var title: String = "체중"
     
@@ -16,7 +16,7 @@ struct WeightFeature: DailyRecordFeature {
     
     var imageColor: Color = Color.blue
     
-    var route: HowWasTodayRouter.Route?
-    
-    var modal: HowWasTodayRouter.Modal? = .weight
+    func getModal(date: Date) -> HowWasTodayRouter.Modal? {
+        .weight(date: date)
+    }
 }

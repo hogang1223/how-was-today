@@ -59,11 +59,11 @@ final class HowWasTodayRouter: ObservableObject {
         case inputSupplement
     }
     
-    enum Modal: String, Identifiable {
-        case dailyRecord
-        case weight
+    enum Modal: Hashable, Identifiable {
+        case dailyRecord(date: Date)
+        case weight(date: Date)
         
-        var id: String { self.rawValue }
+        var id: Self { self }
     }
     
     @Published var path = NavigationPath()
@@ -118,11 +118,19 @@ extension HowWasTodayRouter: ModalRouter {
     }
     
     func modalView(for modal: Modal) -> AnyView {
+        AnyView(getModalView(modal: modal))
+    }
+    
+    private func getModalView(modal: Modal) -> any View {
         switch modal {
-        case .dailyRecord:
-            return AnyView(DailyRecordBottomSheet())
-        case .weight:
-            return AnyView(WeightRecordBottomSheet()
+        case .dailyRecord(let date):
+            return DailyRecordBottomSheet(date: date)
+        case .weight(let date):
+            return WeightRecordBottomSheet(
+                date: date,
+                vmFactory: { _ in
+                    self.dependencies.makeWeightRecordViewModel(date: date)
+                }
             )
         }
     }

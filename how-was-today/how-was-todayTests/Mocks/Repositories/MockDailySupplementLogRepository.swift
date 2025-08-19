@@ -32,7 +32,7 @@ final class MockDailySupplementLogRepository: DailySupplementLogRepository {
         return stubIsTakenById[id] ?? false
     }
     
-    func setIsTaken(on date: Date, _ value: Bool) throws {
+    func saveIsTaken(on date: Date, _ value: Bool) throws {
         if let e = setError { throw e }
         let id = df.string(from: date)
         stubIsTakenById[id] = value

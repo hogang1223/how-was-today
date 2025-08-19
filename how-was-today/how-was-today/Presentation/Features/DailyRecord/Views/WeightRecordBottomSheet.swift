@@ -17,17 +17,15 @@ struct WeightRecordBottomSheet: View {
         static let fracPartPickerWidth = 80.0
     }
     
-    private let min: Int = 1
-    private let max: Int = 300
-
-    @State private var intPart: Int = 50
-    @State private var fracPart: Int = 0
-
-    private var currentValue: Double {
-        Double(intPart) + Double(fracPart) / 10.0
-    }
-    
     @EnvironmentObject var router: HowWasTodayRouter
+    @StateObject private var viewModel: WeightRecordBottomSheetViewModel
+
+    @State private var intPart: Int = 0
+    @State private var fracPart: Int = 0
+    
+    init(date: Date, vmFactory: @escaping (Date) -> WeightRecordBottomSheetViewModel) {
+        self._viewModel = StateObject(wrappedValue: vmFactory(date))
+    }
     
     var body: some View {
         VStack(spacing: BottomSheet.Metric.spacing) {
@@ -37,7 +35,7 @@ struct WeightRecordBottomSheet: View {
 
             // 피커
             HStack(alignment: .center) {
-                WheelNumberPicker(selection: $intPart, range: min...max)
+                WheelNumberPicker(selection: $intPart, range: 1...300)
                     .frame(width: Metric.intPartPickerWidth)
 
                 Text(".")
@@ -53,19 +51,40 @@ struct WeightRecordBottomSheet: View {
             }
 
             Spacer()
-            RoundedContainer(cornerRadius: Metric.buttonRadius) {
-                Button("저장하기") {
-                    // TODO: 데이터 저장
-                    router.dismissModal()
+            HStack(spacing: BottomSheet.Metric.spacing) {
+                if viewModel.hasWeightRecord() {
+                    RoundedContainer(cornerRadius: Metric.buttonRadius) {
+                        Button("지우기") {
+                            viewModel.deleteWeight()
+                            router.dismissModal()
+                        }
+                        .font(.headline)
+                        .foregroundStyle(.black)
+                        .frame(height: Metric.buttonHeight)
+                        .frame(maxWidth: .infinity)
+                        .background(Color.summaryBackground)
+                    }
                 }
-                .font(.headline)
-                .foregroundStyle(.white)
-                .frame(height: Metric.buttonHeight)
-                .frame(maxWidth: .infinity)
-                .background(Color.main)
+                RoundedContainer(cornerRadius: Metric.buttonRadius) {
+                    Button("저장하기") {
+                        let weight = Double(intPart) + (Double(fracPart) / 10.0)
+                        viewModel.saveWeight(weight)
+                        router.dismissModal()
+                    }
+                    .font(.headline)
+                    .foregroundStyle(.white)
+                    .frame(height: Metric.buttonHeight)
+                    .frame(maxWidth: .infinity)
+                    .background(Color.main)
+                }
             }
         }
         .padding(BottomSheet.Metric.padding)
         .presentationDetents([.height(Metric.sheetHeight)])
+        .onAppear {
+            let w10 = Int((viewModel.fetchWeight() * 10).rounded())
+            intPart = w10 / 10
+            fracPart = w10 % 10
+        }
     }
 }

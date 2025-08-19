@@ -27,4 +27,8 @@ final class RepositoryContainer {
     lazy var dailySupplementRepository: DailySupplementLogRepository = DailySupplementLogRepositoryImpl(
         storage: RealmStorage<DailySupplementLog>()
     )
+    
+    lazy var dailyWeightRepository: DailyWeightLogRepository = DailyWeightLogRepositoryImpl(
+        storage: RealmStorage<DailyWeightLog>()
+    )
 }

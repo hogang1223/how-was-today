@@ -19,6 +19,9 @@ final class AppDependencies: DependencyContainer {
     /// 앱 전역에서 사용하는 Repository 모음
     private let repositories: RepositoryContainer
     
+    ///
+    lazy var weightStore: WeightStore = WeightStore(repo: repositories.dailyWeightRepository)
+    
     init(repositories: RepositoryContainer) {
         self.repositories = repositories
     }
@@ -31,13 +34,18 @@ extension AppDependencies {
     /// TodaySummaryView ViewModel 생성
     func makeTodaySummaryViewModel() -> TodaySummaryViewModel {
         return TodaySummaryViewModel(
-            factory: makeSupplementUseCaseFactory()
+            factory: makeSupplementUseCaseFactory(),
+            weightStore: weightStore
         )
     }
     
     /// SupplementInputView ViewModel 생성
     func makeSupplementInputViewModel() -> SupplementInputViewModel {
         return SupplementInputViewModel(supplementRepo: repositories.supplementPlanRepository)
+    }
+    
+    func makeWeightRecordViewModel(date: Date) -> WeightRecordBottomSheetViewModel {
+        return WeightRecordBottomSheetViewModel(date: date, store: weightStore)
     }
 }
 

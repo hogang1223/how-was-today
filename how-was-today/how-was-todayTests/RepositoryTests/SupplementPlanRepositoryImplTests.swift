@@ -17,11 +17,11 @@ final class  SupplementPlanRepositoryImplTests: XCTestCase {
     
     func test_fetchPlan_returnsLatestOnOrBeforeDate() {
         // Given
-        let fake = FakeRealmStorage_SupplementPlan()
+        let fake = FakeRealmStorage<SupplementPlanFactory>()
             .seed([
-                ("2025-08-01", ["A"]),
-                ("2025-08-05", ["B"]),
-                ("2025-08-10", ["C"])
+                .init(id: "2025-08-01", names: ["A"]),
+                .init(id: "2025-08-05", names: ["B"]),
+                .init(id: "2025-08-10", names: ["C"])
             ])
         let repo = SupplementPlanRepositoryImpl(storage: fake)
 
@@ -34,8 +34,10 @@ final class  SupplementPlanRepositoryImplTests: XCTestCase {
 
     func test_savePlan_upsertsById_thenFetchReflectsNew() {
         // Given
-        let fake = FakeRealmStorage_SupplementPlan()
-            .seed([("2025-08-12", ["D", "E", "F"])])
+        let fake = FakeRealmStorage<SupplementPlanFactory>()
+            .seed([
+                .init(id: "2025-08-12", names: ["D", "E", "F"])
+            ])
         let repo = SupplementPlanRepositoryImpl(storage: fake)
         let date = idDate("2025-08-12T00:00:00Z")
 
@@ -53,8 +55,10 @@ final class  SupplementPlanRepositoryImplTests: XCTestCase {
 
     func test_fetchPlan_returnsEmpty_whenNoPastData() {
         // Given
-        let fake = FakeRealmStorage_SupplementPlan()
-            .seed([("2025-08-10", ["A"])])
+        let fake = FakeRealmStorage<SupplementPlanFactory>()
+            .seed([
+                .init(id: "2025-08-10", names: ["A"])
+            ])
         let repo = SupplementPlanRepositoryImpl(storage: fake)
 
         // When
@@ -62,5 +66,31 @@ final class  SupplementPlanRepositoryImplTests: XCTestCase {
 
         // Then
         XCTAssertTrue(result.names.isEmpty)
+    }
+}
+
+// MARK: - SupplementPlanFactory
+
+private enum SupplementPlanFactory: RealmObjectFactory {
+    typealias Model = SupplementPlan
+    
+    struct Seed {
+        let id: String
+        let names: [String]
+    }
+    
+    static func make(from seed: Seed) -> SupplementPlan {
+        let p = SupplementPlan()
+        p.id = seed.id
+        p.append(names: seed.names)
+        return p
+    }
+    
+    static func key(of object: SupplementPlan) -> String {
+        object.id
+    }
+    
+    static func key(from seed: Seed) -> String {
+        seed.id
     }
 }
