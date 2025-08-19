@@ -18,9 +18,11 @@ final class TodaySummaryViewModel: ObservableObject {
     @Published var date: Date
 
     private let factory: SupplementUseCaseFactory
+    private let weightStore: WeightStore
     
-    init(factory: SupplementUseCaseFactory) {
+    init(factory: SupplementUseCaseFactory, weightStore: WeightStore) {
         self.factory = factory
+        self.weightStore = weightStore
         
         let now = Date()
         self.date = now
@@ -46,5 +48,17 @@ extension TodaySummaryViewModel {
         } catch {
             print("toggle Supplement is taken error \(error.localizedDescription)")
         }
+    }
+}
+
+// MARK: - DailyRecord
+
+extension TodaySummaryViewModel {
+    func refreshWeight() {
+        weightStore.refresh(date: date)
+    }
+    func fetchWeight() -> String? {
+        guard let weight = weightStore.weight(on: date) else { return nil }
+        return String(format: "%.1f", weight)
     }
 }

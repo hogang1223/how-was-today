@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ConditionFeature: DailyRecordFeature {
-    var id = "condition"
+    var id = DailyRecord.condition
     
     var title: String = "몸 상태"
     

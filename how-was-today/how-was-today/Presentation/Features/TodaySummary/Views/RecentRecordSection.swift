@@ -71,7 +71,7 @@ struct RecentRecordSection: View {
                 )
             })
             // 건강 및 일상
-            HealthSection()
+            HealthSection(viewModel: viewModel)
                 .padding(.vertical, Metric.padding)
         }
         .padding(TodaySummary.Metric.contentPadding)
@@ -115,6 +115,9 @@ struct SupplementSection: View {
 struct HealthSection: View {
     
     @EnvironmentObject var router: HowWasTodayRouter
+    @ObservedObject var viewModel: TodaySummaryViewModel
+    
+    private let features = DailyRecord.all
     
     var body: some View {
         VStack(alignment: .leading, spacing: Metric.healthSectionSpacing) {
@@ -123,16 +126,27 @@ struct HealthSection: View {
                 .fontWeight(.semibold)
                 .foregroundColor(Color.subTitle)
             
-            // FIXME: 사용자가 입력한 데이터 보여줄 수 있도록 변경 필요
-            RecentRecordCardView(
-                systemImageName: "face.smiling.inverse",
-                imageBackgroundColor: Color.health,
-                categoryTitle: "몸 상태 및 기분",
-                details: "소화불량"
-            )
+            ForEach(features, id: \.id) { f in
+                if let details = getDetails(for: f) {
+                    Button(action: {
+                        if let route = f.getRoute(date: viewModel.date) {
+                            router.push(route)
+                        } else if let modal = f.getModal(date: viewModel.date) {
+                            router.present(modal)
+                        }
+                    }, label: {
+                        RecentRecordCardView(
+                            systemImageName: f.systemImageName,
+                            imageBackgroundColor: f.imageColor,
+                            categoryTitle: f.title,
+                            details: details
+                        )
+                    })
+                }
+            }
             // 기록하기 버튼
             Button(action: {
-                router.present(.dailyRecord)
+                router.present(.dailyRecord(date: viewModel.date))
             }, label: {
                 RecentRecordCardView(
                     systemImageName: "plus",
@@ -141,6 +155,18 @@ struct HealthSection: View {
                     details: "기록 추가하기"
                 )
             })
+        }
+        .onAppear {
+            viewModel.refreshWeight()
+        }
+    }
+    
+    private func getDetails(for f: any DailyRecordFeature) -> String? {
+        switch f.id {
+        case .weight:
+            return viewModel.fetchWeight()
+        default:
+            return nil
         }
     }
 }
