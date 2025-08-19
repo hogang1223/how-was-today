@@ -52,4 +52,20 @@ extension FakeRealmStorage: DataStorage {
     func delete(_ object: Model) throws {
         store.removeValue(forKey: F.key(of: object))
     }
+    
+    func deleteAll(predicate: NSPredicate?) throws {
+        let all = Array(store.values)
+        let targets: [Model]
+
+        if let predicate = predicate {
+            targets = all.filter { predicate.evaluate(with: $0) }
+        } else {
+            targets = all
+        }
+
+        for target in targets {
+            store.removeValue(forKey: F.key(of: target))
+        }
+    }
+
 }
