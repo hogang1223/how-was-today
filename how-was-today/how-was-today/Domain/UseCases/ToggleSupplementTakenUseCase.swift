@@ -20,6 +20,6 @@ struct ToggleSupplementTakenUseCaseImpl: ToggleSupplementTakenUseCase {
     }
     
     func execute(date: Date, isTaken: Bool) throws {
-        try logRepo.setIsTaken(on: date, isTaken)
+        try logRepo.saveIsTaken(on: date, isTaken)
     }
 }

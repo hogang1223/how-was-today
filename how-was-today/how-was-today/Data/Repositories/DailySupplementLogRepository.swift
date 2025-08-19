@@ -18,7 +18,7 @@ protocol DailySupplementLogRepository {
     /// 특정 날짜의 복용 여부 설정
     /// - Parameter date: 설정할 날짜
     /// - Parameter value: 복용 여부(true/false)
-    func setIsTaken(on date: Date, _ value: Bool) throws
+    func saveIsTaken(on date: Date, _ value: Bool) throws
 }
 
 final class DailySupplementLogRepositoryImpl<Storage: DataStorage>: DailySupplementLogRepository
@@ -34,7 +34,7 @@ where Storage.ObjectType == DailySupplementLog {
         return one?.isTaken == true
     }
 
-    func setIsTaken(on date: Date, _ value: Bool) throws {
+    func saveIsTaken(on date: Date, _ value: Bool) throws {
         let key = date.toString(format: Supplement.dateFormat)
         let log = DailySupplementLog()
         log.id = key
