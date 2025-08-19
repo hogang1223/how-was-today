@@ -62,7 +62,7 @@ final class HowWasTodayRouter: ObservableObject {
     enum Modal: Hashable, Identifiable {
         case dailyRecord(date: Date)
         case weight(date: Date)
-        case mood
+        case mood(date: Date)
         
         var id: Self { self }
     }
@@ -136,9 +136,14 @@ extension HowWasTodayRouter: ModalRouter {
                 vmFactory: { _ in
                     self.dependencies.makeWeightRecordViewModel(date: date)
                 }
-            )
-        case .mood:
-            return AnyView(MoodRecordBottomSheet())
+            ).id(date)
+        case .mood(let date):
+            return MoodRecordBottomSheet(
+                date: date,
+                viewModelFactory: { _ in
+                    self.dependencies.makeMoodRecordBottomSheetViewModel(date: date)
+                }
+            ).id(date)
         }
     }
 }

@@ -21,6 +21,7 @@ final class AppDependencies: DependencyContainer {
     
     ///
     lazy var weightStore: WeightStore = WeightStore(repo: repositories.dailyWeightRepository)
+    lazy var moodStore: MoodStore = MoodStore(repo: repositories.dailyMoodRepository)
     
     init(repositories: RepositoryContainer) {
         self.repositories = repositories
@@ -35,17 +36,20 @@ extension AppDependencies {
     func makeTodaySummaryViewModel() -> TodaySummaryViewModel {
         return TodaySummaryViewModel(
             factory: makeSupplementUseCaseFactory(),
-            weightStore: weightStore
+            fetchDailyRecordUC: makeFetchDailyRecordUseCase()
         )
     }
-    
     /// SupplementInputView ViewModel 생성
     func makeSupplementInputViewModel() -> SupplementInputViewModel {
         return SupplementInputViewModel(supplementRepo: repositories.supplementPlanRepository)
     }
-    
+    ///
     func makeWeightRecordViewModel(date: Date) -> WeightRecordBottomSheetViewModel {
         return WeightRecordBottomSheetViewModel(date: date, store: weightStore)
+    }
+    ///
+    func makeMoodRecordBottomSheetViewModel(date: Date) -> MoodRecordBottomSheetViewModel {
+        return MoodRecordBottomSheetViewModel(date: date, store: moodStore)
     }
 }
 
@@ -67,5 +71,9 @@ extension AppDependencies {
                 )
             }
         )
+    }
+    
+    func makeFetchDailyRecordUseCase() -> FetchDailyRecordUseCase {
+        return FetchDailyRecordUseCaseImpl(weightStore: weightStore, moodStore: moodStore)
     }
 }

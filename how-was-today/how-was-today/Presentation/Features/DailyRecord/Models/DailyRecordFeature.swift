@@ -6,24 +6,8 @@
 //
 import SwiftUI
 
-enum DailyRecord: String, CaseIterable {
-    case weight
-    case condition
-    case mood
-    case memo
-    
-    static let dateFormat = "yyyy-MM-dd"
-    
-    static let all: [any DailyRecordFeature] = [
-        WeightFeature(),
-        ConditionFeature(),
-        MoodFeature(),
-        MemoFeature()
-    ]
-}
-
 protocol DailyRecordFeature: Identifiable {
-    var id: DailyRecord { get }
+    var id: DailyRecordType { get }
     var title: String { get }
     var systemImageName: String { get }
     var imageColor: Color { get }

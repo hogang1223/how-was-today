@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct MoodFeature: DailyRecordFeature {
-    var id = DailyRecord.mood
+    var id = DailyRecordType.mood
     
     var title: String = "기분"
     
@@ -16,9 +16,9 @@ struct MoodFeature: DailyRecordFeature {
     
     var imageColor: Color = Color.yellow
     
-    var route: HowWasTodayRouter.Route?
-    
-    var modal: HowWasTodayRouter.Modal? = .mood
+    func getModal(date: Date) -> HowWasTodayRouter.Modal? {
+        .mood(date: date)
+    }
 }
 
 enum Mood: String, CaseIterable, Identifiable {

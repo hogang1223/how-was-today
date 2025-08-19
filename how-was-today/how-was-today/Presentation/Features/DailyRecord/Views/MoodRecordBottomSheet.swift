@@ -14,9 +14,12 @@ struct MoodRecordBottomSheet: View {
     }
     
     @EnvironmentObject var router: HowWasTodayRouter
+    @StateObject private var viewModel: MoodRecordBottomSheetViewModel
     @State private var selectedMood: Mood?
-    var savedMood: Mood?
     
+    init(date: Date, viewModelFactory: @escaping (Date) -> MoodRecordBottomSheetViewModel) {
+        self._viewModel = StateObject(wrappedValue: viewModelFactory(date))
+    }
     
     var body: some View {
         VStack(alignment: .leading, spacing: BottomSheet.Metric.spacing) {
@@ -49,10 +52,10 @@ struct MoodRecordBottomSheet: View {
             .frame(maxWidth: .infinity, alignment: .leading)
             Spacer()
             HStack {
-                if savedMood != nil {
+                if viewModel.fetchMood() != nil {
                     RoundedContainer(cornerRadius: Metric.buttonRadius) {
                         Button("지우기") {
-                            // TODO: 데이터 삭제
+                            viewModel.deleteMood()
                             router.dismissModal()
                         }
                         .font(.headline)
@@ -64,7 +67,9 @@ struct MoodRecordBottomSheet: View {
                 }
                 RoundedContainer(cornerRadius: Metric.buttonRadius) {
                     Button("저장하기") {
-                        // TODO: 데이터 저장
+                        if let mood = selectedMood {
+                            viewModel.saveMood(mood)
+                        }
                         router.dismissModal()
                     }
                     .font(.headline)
@@ -78,7 +83,8 @@ struct MoodRecordBottomSheet: View {
         .padding(BottomSheet.Metric.padding)
         .presentationDetents([.medium])
         .onAppear {
-            selectedMood = savedMood
+            viewModel.refresh()
+            self.selectedMood = viewModel.fetchMood()
         }
     }
 }
