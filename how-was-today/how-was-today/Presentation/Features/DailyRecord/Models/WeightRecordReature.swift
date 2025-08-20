@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct WeightFeature: DailyRecordFeature {
-    var id = DailyRecord.weight
+    var id = DailyRecordType.weight
     
     var title: String = "체중"
     

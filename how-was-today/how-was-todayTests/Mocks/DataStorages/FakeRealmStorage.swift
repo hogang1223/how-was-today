@@ -67,5 +67,4 @@ extension FakeRealmStorage: DataStorage {
             store.removeValue(forKey: F.key(of: target))
         }
     }
-
 }

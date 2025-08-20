@@ -8,15 +8,11 @@
 import SwiftUI
 
 struct ConditionFeature: DailyRecordFeature {
-    var id = DailyRecord.condition
+    var id = DailyRecordType.condition
     
     var title: String = "몸 상태"
     
     var systemImageName: String = "figure.child"
     
     var imageColor: Color = Color.health
-    
-    var route: HowWasTodayRouter.Route?
-    
-    var modal: HowWasTodayRouter.Modal?
 }

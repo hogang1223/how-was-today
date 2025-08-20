@@ -13,10 +13,12 @@ struct DailyRecordBottomSheet: View {
         static let iconImageFrameSize = 54.0
         static let iconImageSize = 24.0
         static let sheetHeight = 300.0
-        static let gridColumnsCount = 2
+        static let gridColumnCount = 2
+
     }
     
     @EnvironmentObject var router: HowWasTodayRouter
+    
     private let date: Date
     private let features = DailyRecord.all
     
@@ -30,7 +32,7 @@ struct DailyRecordBottomSheet: View {
                 router.dismissModal()
             }
             LazyVGrid(columns: Array(repeating: GridItem(.flexible()),
-                                     count: Metric.gridColumnsCount),
+                                     count: Metric.gridColumnCount),
                       spacing: BottomSheet.Metric.spacing) {
                 ForEach(features, id: \.id) { f in
                     Button(action: {

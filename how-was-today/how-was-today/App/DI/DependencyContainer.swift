@@ -18,6 +18,8 @@ protocol DependencyContainer {
     /// WeightRecord
     func makeWeightRecordViewModel(date: Date) -> WeightRecordBottomSheetViewModel
     
+    func makeMoodRecordBottomSheetViewModel(date: Date) -> MoodRecordBottomSheetViewModel
+    
     // MARK: - UseCase
     func makeSupplementUseCaseFactory() -> SupplementUseCaseFactory
 }

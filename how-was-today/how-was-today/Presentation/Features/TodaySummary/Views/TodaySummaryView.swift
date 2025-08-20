@@ -26,6 +26,7 @@ enum TodaySummary {
 ///
 struct TodaySummaryView: View {
     
+    @EnvironmentObject var router: HowWasTodayRouter
     @StateObject var viewModel: TodaySummaryViewModel
     
     init(viewModelFactory: @escaping () -> TodaySummaryViewModel) {
@@ -73,6 +74,14 @@ struct TodaySummaryView: View {
         .background(Color.summaryBackground)
         .onAppear {
             viewModel.loadSupplement()
+            viewModel.refreshDailyRecord()
+            viewModel.fetchDailyRecord()
+        }
+        .onChange(of: router.modal) { modal in
+            if modal == nil {
+                viewModel.refreshDailyRecord()
+                viewModel.fetchDailyRecord()
+            }
         }
     }
 }

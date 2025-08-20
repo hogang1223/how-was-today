@@ -116,18 +116,18 @@ struct HealthSection: View {
     
     @EnvironmentObject var router: HowWasTodayRouter
     @ObservedObject var viewModel: TodaySummaryViewModel
-    
+
     private let features = DailyRecord.all
-    
+
     var body: some View {
         VStack(alignment: .leading, spacing: Metric.healthSectionSpacing) {
             Text("건강 및 일상")
                 .font(.subheadline)
                 .fontWeight(.semibold)
                 .foregroundColor(Color.subTitle)
-            
+
             ForEach(features, id: \.id) { f in
-                if let details = getDetails(for: f) {
+                if let details = getDetails(feature: f) {
                     Button(action: {
                         if let route = f.getRoute(date: viewModel.date) {
                             router.push(route)
@@ -144,6 +144,7 @@ struct HealthSection: View {
                     })
                 }
             }
+
             // 기록하기 버튼
             Button(action: {
                 router.present(.dailyRecord(date: viewModel.date))
@@ -156,15 +157,14 @@ struct HealthSection: View {
                 )
             })
         }
-        .onAppear {
-            viewModel.refreshWeight()
-        }
     }
     
-    private func getDetails(for f: any DailyRecordFeature) -> String? {
-        switch f.id {
+    private func getDetails(feature: any DailyRecordFeature) -> String? {
+        switch feature.id {
         case .weight:
-            return viewModel.fetchWeight()
+            return viewModel.dailyRecord.weight
+        case .mood:
+            return viewModel.dailyRecord.mood
         default:
             return nil
         }

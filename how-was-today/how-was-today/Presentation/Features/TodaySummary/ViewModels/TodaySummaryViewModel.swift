@@ -14,19 +14,24 @@ struct SupplementUseCaseFactory {
 
 final class TodaySummaryViewModel: ObservableObject {
     
-    @Published var supplement: Supplement
     @Published var date: Date
+    @Published var supplement: Supplement
+    @Published var dailyRecord: DailyRecord
 
     private let factory: SupplementUseCaseFactory
-    private let weightStore: WeightStore
+    private let fetchDailyRecordUC: FetchDailyRecordUseCase
     
-    init(factory: SupplementUseCaseFactory, weightStore: WeightStore) {
+    init(
+        factory: SupplementUseCaseFactory,
+        fetchDailyRecordUC: FetchDailyRecordUseCase
+    ) {
         self.factory = factory
-        self.weightStore = weightStore
+        self.fetchDailyRecordUC = fetchDailyRecordUC
         
         let now = Date()
         self.date = now
         self.supplement = Supplement(date: now, names: [])
+        self.dailyRecord = DailyRecord(date: now)
         
         loadSupplement()
     }
@@ -54,11 +59,12 @@ extension TodaySummaryViewModel {
 // MARK: - DailyRecord
 
 extension TodaySummaryViewModel {
-    func refreshWeight() {
-        weightStore.refresh(date: date)
+    
+    func refreshDailyRecord() {
+        fetchDailyRecordUC.refresh(date: date)
     }
-    func fetchWeight() -> String? {
-        guard let weight = weightStore.weight(on: date) else { return nil }
-        return String(format: "%.1f", weight)
+    
+    func fetchDailyRecord() {
+        dailyRecord = fetchDailyRecordUC.fetch(date: date)
     }
 }

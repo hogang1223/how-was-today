@@ -87,7 +87,6 @@ final class SupplementInputViewModel: ObservableObject {
 }
 
 extension SupplementInputViewModel {
-    
     /// 저장된 복용 계획 불러오기
     /// - 부족한 입력 칸은 빈 문자열로 채움
     private func loadSupplements() {

@@ -62,6 +62,7 @@ final class HowWasTodayRouter: ObservableObject {
     enum Modal: Hashable, Identifiable {
         case dailyRecord(date: Date)
         case weight(date: Date)
+        case mood(date: Date)
         
         var id: Self { self }
     }
@@ -75,6 +76,8 @@ final class HowWasTodayRouter: ObservableObject {
         self.dependencies = dependencies
     }
 }
+
+// MARK: - Router
 
 extension HowWasTodayRouter: Router {
     func push(_ route: Route) {
@@ -106,6 +109,8 @@ extension HowWasTodayRouter: Router {
     }
 }
 
+// MARK: - ModalRouter
+
 extension HowWasTodayRouter: ModalRouter {
     
     func present(_ modal: Modal) {
@@ -131,7 +136,14 @@ extension HowWasTodayRouter: ModalRouter {
                 vmFactory: { _ in
                     self.dependencies.makeWeightRecordViewModel(date: date)
                 }
-            )
+            ).id(date)
+        case .mood(let date):
+            return MoodRecordBottomSheet(
+                date: date,
+                viewModelFactory: { _ in
+                    self.dependencies.makeMoodRecordBottomSheetViewModel(date: date)
+                }
+            ).id(date)
         }
     }
 }
