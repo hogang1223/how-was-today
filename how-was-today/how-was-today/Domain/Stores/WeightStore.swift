@@ -7,10 +7,12 @@
 
 import Foundation
 
-final class WeightStore: ObservableObject {
+final class WeightStore: ObservableObject, DailyRecordStore {
+    
+    typealias T = Double
     
     let defaultWeight = 50.0
-    @Published private(set) var itemByDate: [String: Double] = [:]
+    @Published var itemByDate: [String: Double] = [:]
     
     private let repo: DailyWeightLogRepository
     
@@ -20,7 +22,7 @@ final class WeightStore: ObservableObject {
     
     func refresh(date: Date) {
         if let w = repo.fetchWeight(on: date) {
-            itemByDate[id(from: date)] = w
+            itemByDate[key(from: date)] = w
         }
     }
     
@@ -31,26 +33,18 @@ final class WeightStore: ObservableObject {
     func save(_ weight: Double, on date: Date) {
         do {
             try repo.saveWeight(on: date, weight)
-            itemByDate[id(from: date)] = weight
+            itemByDate[key(from: date)] = weight
         } catch {
             print("save weight error \(error.localizedDescription)")
         }
     }
     
-    func weight(on date: Date) -> Double? {
-        itemByDate[id(from: date)]
-    }
-    
     func delete(on date: Date) {
         do {
             try repo.deleteWeight(on: date)
-            itemByDate.removeValue(forKey: id(from: date))
+            itemByDate.removeValue(forKey: key(from: date))
         } catch {
             print("delete weight error \(error.localizedDescription)")
         }
-    }
-    
-    private func id(from date: Date) -> String {
-        date.toString(format: DailyRecord.dateFormat)
     }
 }

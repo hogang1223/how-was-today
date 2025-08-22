@@ -20,6 +20,8 @@ protocol DependencyContainer {
     
     func makeMoodRecordBottomSheetViewModel(date: Date) -> MoodRecordBottomSheetViewModel
     
+    func makeConditionRecordBottomSheetViewModel(date: Date) -> ConditionRecordViewModel<ConditionStore>
+    
     // MARK: - UseCase
     func makeSupplementUseCaseFactory() -> SupplementUseCaseFactory
 }

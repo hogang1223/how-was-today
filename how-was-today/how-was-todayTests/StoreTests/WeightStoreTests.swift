@@ -28,7 +28,7 @@ final class WeightStoreTests: XCTestCase {
         sut.refresh(date: date)
         
         // then
-        XCTAssertEqual(sut.weight(on: date), 56.7)
+        XCTAssertEqual(sut.item(on: date), 56.7)
     }
     
     func test_refresh_doesNothing_whenRepoReturnsNil() {
@@ -38,7 +38,7 @@ final class WeightStoreTests: XCTestCase {
         
         sut.refresh(date: date)
         
-        XCTAssertNil(sut.weight(on: date))
+        XCTAssertNil(sut.item(on: date))
     }
     
     func test_save_updatesRepoAndCache_onSuccess() {
@@ -49,7 +49,7 @@ final class WeightStoreTests: XCTestCase {
         sut.save(70.3, on: date)
         
         XCTAssertEqual(repo.fetchWeight(on: date), 70.3)
-        XCTAssertEqual(sut.weight(on: date), 70.3)
+        XCTAssertEqual(sut.item(on: date), 70.3)
     }
     
     struct DummyError: Error {}
@@ -63,7 +63,7 @@ final class WeightStoreTests: XCTestCase {
         store.save(71.9, on: date)
         
         XCTAssertNil(repo.fetchWeight(on: date))   // save 실패
-        XCTAssertNil(store.weight(on: date))         // 캐시도 업데이트 X
+        XCTAssertNil(store.item(on: date))         // 캐시도 업데이트 X
     }
     
     func test_delete_removesFromRepoAndCache_onSuccess() {
@@ -78,7 +78,7 @@ final class WeightStoreTests: XCTestCase {
         store.delete(on: date)
         
         XCTAssertNil(repo.fetchWeight(on: date))
-        XCTAssertNil(store.weight(on: date))
+        XCTAssertNil(store.item(on: date))
     }
     
     func test_delete_keepsCache_whenRepoThrows() {
@@ -95,7 +95,7 @@ final class WeightStoreTests: XCTestCase {
         
         // repo는 삭제 실패 → 값 남아있을 수 있음(정책 상관없음)
         // 중요한 건 캐시가 함부로 지워지지 않는 것
-        XCTAssertEqual(store.weight(on: date), 60.0)
+        XCTAssertEqual(store.item(on: date), 60.0)
     }
     
     func test_lastestWeight_delegatesToRepo() {
