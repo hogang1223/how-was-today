@@ -29,10 +29,10 @@ struct FetchDailyRecordUseCaseImpl: FetchDailyRecordUseCase {
     
     func fetch(date: Date) -> DailyRecord {
         var record = DailyRecord(date: date)
-        if let weight = weightStore.weight(on: date) {
+        if let weight = weightStore.item(on: date) {
             record.weight = String(format: "%.1f", weight)
         }
-        record.mood = moodStore.mood(on: date)?.rawValue
+        record.mood = moodStore.item(on: date)?.rawValue
         return record
     }
 }

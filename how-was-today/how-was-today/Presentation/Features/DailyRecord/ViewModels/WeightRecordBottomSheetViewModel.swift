@@ -19,7 +19,7 @@ final class WeightRecordBottomSheetViewModel: ObservableObject {
     }
     
     func fetchWeight() -> Double {
-        if let weight = store.weight(on: date) {
+        if let weight = store.item(on: date) {
             return weight
         } else if let lastestWeight = store.lastestWeight(date: date) {
             return lastestWeight
@@ -33,7 +33,7 @@ final class WeightRecordBottomSheetViewModel: ObservableObject {
     }
     
     func hasWeightRecord() -> Bool {
-        return store.weight(on: date) != nil
+        return store.item(on: date) != nil
     }
     
     func deleteWeight() {
