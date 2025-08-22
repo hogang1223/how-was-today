@@ -57,6 +57,7 @@ final class HowWasTodayRouter: ObservableObject {
     enum Route: Hashable {
         case todaySummary
         case inputSupplement
+        case memo(date: Date)
     }
     
     enum Modal: Hashable, Identifiable {
@@ -100,11 +101,17 @@ extension HowWasTodayRouter: Router {
     
     @ViewBuilder
     func view(for route: Route) -> some View {
+        let deps = self.dependencies
         switch route {
         case .todaySummary:
             TodaySummaryView(viewModelFactory: self.dependencies.makeTodaySummaryViewModel)
         case .inputSupplement:
             SupplementInputView(viewModelFactory: dependencies.makeSupplementInputViewModel)
+        case .memo(let date):
+            MemoRecordView(date: date, vmFactory: { _ in
+                deps.makeMemoRecrodViewModel(date: date)
+            }
+            ).id(date)
         }
     }
 }
@@ -127,6 +134,7 @@ extension HowWasTodayRouter: ModalRouter {
     }
     
     private func getModalView(modal: Modal) -> any View {
+        let deps = self.dependencies
         switch modal {
         case .dailyRecord(let date):
             return DailyRecordBottomSheet(date: date)
@@ -134,14 +142,14 @@ extension HowWasTodayRouter: ModalRouter {
             return WeightRecordBottomSheet(
                 date: date,
                 vmFactory: { _ in
-                    self.dependencies.makeWeightRecordViewModel(date: date)
+                    deps.makeWeightRecordViewModel(date: date)
                 }
             ).id(date)
         case .mood(let date):
             return MoodRecordBottomSheet(
                 date: date,
                 viewModelFactory: { _ in
-                    self.dependencies.makeMoodRecordBottomSheetViewModel(date: date)
+                    return deps.makeMoodRecordBottomSheetViewModel(date: date)
                 }
             ).id(date)
         }

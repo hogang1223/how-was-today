@@ -51,6 +51,9 @@ extension AppDependencies {
     func makeMoodRecordBottomSheetViewModel(date: Date) -> MoodRecordBottomSheetViewModel {
         return MoodRecordBottomSheetViewModel(date: date, store: moodStore)
     }
+    func makeMemoRecrodViewModel(date: Date) -> MemoRecordViewModel {
+        MemoRecordViewModel(date: date)
+    }
 }
 
 // MARK: - UseCases

@@ -15,10 +15,10 @@ protocol DependencyContainer {
     func makeTodaySummaryViewModel() -> TodaySummaryViewModel
     /// SupplementInput 화면에서 사용할 ViewModel 생성
     func makeSupplementInputViewModel() -> SupplementInputViewModel
-    /// WeightRecord
-    func makeWeightRecordViewModel(date: Date) -> WeightRecordBottomSheetViewModel
     
+    func makeWeightRecordViewModel(date: Date) -> WeightRecordBottomSheetViewModel
     func makeMoodRecordBottomSheetViewModel(date: Date) -> MoodRecordBottomSheetViewModel
+    func makeMemoRecrodViewModel(date: Date) -> MemoRecordViewModel
     
     // MARK: - UseCase
     func makeSupplementUseCaseFactory() -> SupplementUseCaseFactory
