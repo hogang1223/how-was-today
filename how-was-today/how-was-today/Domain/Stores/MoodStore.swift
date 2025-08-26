@@ -7,9 +7,11 @@
 
 import Foundation
 
-final class MoodStore: ObservableObject {
+final class MoodStore: ObservableObject, DailyRecordStore {
     
-    @Published private(set) var itemByDate: [String: Mood] = [:]
+    typealias T = Mood
+    
+    @Published var itemByDate: [String: Mood] = [:]
     
     private let repo: DailyMoodLogRepository
     
@@ -19,33 +21,25 @@ final class MoodStore: ObservableObject {
     
     func refresh(date: Date) {
         if let mood = repo.fetchMood(on: date) {
-            itemByDate[id(from: date)] = mood
+            itemByDate[key(from: date)] = mood
         }
     }
     
     func save(_ mood: Mood, on date: Date) {
         do {
             try repo.saveMood(on: date, mood)
-            itemByDate[id(from: date)] = mood
+            itemByDate[key(from: date)] = mood
         } catch {
             print("save mood error \(error.localizedDescription)")
         }
     }
     
-    func mood(on date: Date) -> Mood? {
-        itemByDate[id(from: date)]
-    }
-    
     func delete(on date: Date) {
         do {
             try repo.deleteMood(on: date)
-            itemByDate.removeValue(forKey: id(from: date))
+            itemByDate.removeValue(forKey: key(from: date))
         } catch {
             print("delete mood error \(error.localizedDescription)")
         }
-    }
-    
-    private func id(from date: Date) -> String {
-        date.toString(format: DailyRecord.dateFormat)
     }
 }

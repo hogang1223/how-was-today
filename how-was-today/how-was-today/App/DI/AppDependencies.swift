@@ -22,6 +22,7 @@ final class AppDependencies: DependencyContainer {
     ///
     lazy var weightStore: WeightStore = WeightStore(repo: repositories.dailyWeightRepository)
     lazy var moodStore: MoodStore = MoodStore(repo: repositories.dailyMoodRepository)
+    lazy var conditionStore: ConditionStore = ConditionStore(repo: repositories.dailyCondiotionRepository)
     
     init(repositories: RepositoryContainer) {
         self.repositories = repositories
@@ -51,6 +52,10 @@ extension AppDependencies {
     func makeMoodRecordBottomSheetViewModel(date: Date) -> MoodRecordBottomSheetViewModel {
         return MoodRecordBottomSheetViewModel(date: date, store: moodStore)
     }
+    
+    func makeConditionRecordBottomSheetViewModel(date: Date) -> ConditionRecordViewModel<ConditionStore> {
+        ConditionRecordViewModel(date: date, store: conditionStore)
+    }
 }
 
 // MARK: - UseCases
@@ -74,6 +79,10 @@ extension AppDependencies {
     }
     
     func makeFetchDailyRecordUseCase() -> FetchDailyRecordUseCase {
-        return FetchDailyRecordUseCaseImpl(weightStore: weightStore, moodStore: moodStore)
+        return FetchDailyRecordUseCaseImpl(
+            weightStore: weightStore,
+            moodStore: moodStore,
+            conditionStore: conditionStore
+        )
     }
 }

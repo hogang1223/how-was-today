@@ -37,6 +37,7 @@ struct DailyRecordBottomSheet: View {
                 ForEach(features, id: \.id) { f in
                     Button(action: {
                         if let route = f.getRoute(date: date) {
+                            router.dismissModal()
                             router.push(route)
                         } else if let modal = f.getModal(date: date) {
                             router.present(modal)

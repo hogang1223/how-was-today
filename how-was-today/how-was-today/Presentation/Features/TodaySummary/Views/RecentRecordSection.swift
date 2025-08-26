@@ -165,8 +165,10 @@ struct HealthSection: View {
             return viewModel.dailyRecord.weight
         case .mood:
             return viewModel.dailyRecord.mood
-        default:
-            return nil
+        case .condition:
+            return viewModel.dailyRecord.condition
+        case .memo:
+            return viewModel.dailyRecord.memo
         }
     }
 }
@@ -207,6 +209,9 @@ struct RecentRecordCardView: View {
                 Text(details)
                     .font(.subheadline)
                     .foregroundColor(.black)
+                    .multilineTextAlignment(.leading)
+                    .lineLimit(2)
+                    .truncationMode(.tail)
             }
             Spacer()
         }

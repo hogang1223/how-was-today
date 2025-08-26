@@ -22,7 +22,7 @@ final class MoodRecordBottomSheetViewModel: ObservableObject {
     }
     
     func fetchMood() -> Mood? {
-        store.mood(on: date)
+        store.item(on: date)
     }
     
     func saveMood(_ mood: Mood) {
