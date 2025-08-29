@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import UIKit
 
 extension Color {
     static let main = Color(hex: "#5EC3E8")
@@ -16,4 +17,8 @@ extension Color {
     // icon tint color
     static let supplement = Color(hex: "#A3DB91")
     static let health =  Color(hex: "#756355")
+}
+
+extension UIColor {
+    static let main = UIColor(hex: "#5EC3E8")
 }

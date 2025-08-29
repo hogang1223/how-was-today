@@ -15,4 +15,8 @@ struct MemoFeature: DailyRecordFeature {
     var systemImageName: String = "pencil.and.scribble"
     
     var imageColor: Color = Color.orange
+    
+    func getRoute(date: Date) -> HowWasTodayRouter.Route? {
+        .memo(date: date)
+    }
 }
