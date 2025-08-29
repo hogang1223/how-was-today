@@ -36,6 +36,8 @@ struct MemoRecordView: View {
         .appNavigationBar(title: "메모", onBack: {
             if viewModel.isMemoChanged() {
                 showLeaveAlert = true
+            } else {
+                router.pop()
             }
         }, trailing: {
             Button("초기화") { viewModel.reset() }
