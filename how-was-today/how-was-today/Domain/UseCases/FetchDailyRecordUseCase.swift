@@ -17,21 +17,25 @@ struct FetchDailyRecordUseCaseImpl: FetchDailyRecordUseCase {
     private let weightStore: WeightStore
     private let moodStore: MoodStore
     private let conditionStore: ConditionStore
+    private let memoStore: MemoStore
     
     init(
         weightStore: WeightStore,
         moodStore: MoodStore,
-        conditionStore: ConditionStore
+        conditionStore: ConditionStore,
+        memoStore: MemoStore
     ) {
         self.weightStore = weightStore
         self.moodStore = moodStore
         self.conditionStore = conditionStore
+        self.memoStore = memoStore
     }
     
     func refresh(date: Date) {
         weightStore.refresh(date: date)
         moodStore.refresh(date: date)
         conditionStore.refresh(date: date)
+        memoStore.refresh(date: date)
     }
     
     func fetch(date: Date) -> DailyRecord {
@@ -46,6 +50,8 @@ struct FetchDailyRecordUseCaseImpl: FetchDailyRecordUseCase {
             let condition = titles.joined(separator: ", ")
             record.condition = condition
         }
+        record.memo = memoStore.item(on: date)
+        
         return record
     }
 }

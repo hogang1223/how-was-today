@@ -18,9 +18,8 @@ protocol DependencyContainer {
     
     func makeWeightRecordViewModel(date: Date) -> WeightRecordBottomSheetViewModel
     func makeMoodRecordBottomSheetViewModel(date: Date) -> MoodRecordBottomSheetViewModel
-    func makeMemoRecrodViewModel(date: Date) -> MemoRecordViewModel
-    
     func makeConditionRecordViewModel(date: Date) -> ConditionRecordViewModel<ConditionStore>
+    func makeMemoRecrodViewModel(date: Date) -> MemoRecordViewModel<MemoStore>
     
     // MARK: - UseCase
     func makeSupplementUseCaseFactory() -> SupplementUseCaseFactory

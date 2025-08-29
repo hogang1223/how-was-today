@@ -5,11 +5,11 @@ import UIKit
 
 struct MemoRecordView: View {
     @EnvironmentObject var router: HowWasTodayRouter
-    @StateObject private var viewModel: MemoRecordViewModel
+    @StateObject private var viewModel: MemoRecordViewModel<MemoStore>
     
     @State private var showLeaveAlert = false
 
-    init(date: Date, vmFactory: @escaping (Date) -> MemoRecordViewModel) {
+    init(date: Date, vmFactory: @escaping (Date) -> MemoRecordViewModel<MemoStore>) {
         _viewModel = StateObject(wrappedValue: vmFactory(date))
     }
 

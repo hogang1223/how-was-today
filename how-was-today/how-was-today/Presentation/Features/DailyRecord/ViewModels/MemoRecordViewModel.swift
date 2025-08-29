@@ -7,9 +7,11 @@
 
 import Foundation
 
-final class MemoRecordViewModel: ObservableObject {
+final class MemoRecordViewModel<Store: DailyRecordStore>: ObservableObject where Store.T == String {
     
     let date: Date
+    private let store: Store
+    
     @Published var memo: String = ""
     private var original: String = ""
     
@@ -17,8 +19,9 @@ final class MemoRecordViewModel: ObservableObject {
         memo.isEmpty
     }
     
-    init(date: Date) {
+    init(date: Date, store: Store) {
         self.date = date
+        self.store = store
     }
     
     func reset() {
@@ -26,19 +29,30 @@ final class MemoRecordViewModel: ObservableObject {
     }
     
     func refresh() {
-        
+        store.refresh(date: date)
+        fetch()
+    }
+    
+    func fetch() {
+        if let newMemo = store.item(on: date) {
+            memo = newMemo
+            original = newMemo
+        }
     }
     
     func save() {
+        guard isMemoChanged() else { return }
+        
         let trimmed = memo.trimmingCharacters(in: .whitespacesAndNewlines)
         if trimmed.isEmpty {
             delete()
         } else {
-            // save
+            store.save(memo, on: date)
         }
     }
     
     func delete() {
+        store.delete(on: date)
     }
     
     func isMemoChanged() -> Bool {
