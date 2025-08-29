@@ -56,7 +56,7 @@ extension AppDependencies {
     func makeConditionRecordViewModel(date: Date) -> ConditionRecordViewModel<ConditionStore> {
         ConditionRecordViewModel(date: date, store: conditionStore)
     }
-    func makeMemoRecrodViewModel(date: Date) -> MemoRecordViewModel<MemoStore> {
+    func makeMemoRecordViewModel(date: Date) -> MemoRecordViewModel<MemoStore> {
         MemoRecordViewModel(date: date, store: memoStore)
     }
 }

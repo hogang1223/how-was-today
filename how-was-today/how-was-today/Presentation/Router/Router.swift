@@ -117,7 +117,7 @@ extension HowWasTodayRouter: Router {
             ).id(date)
         case .memo(let date):
             MemoRecordView(date: date, vmFactory: { _ in
-                dep.makeMemoRecrodViewModel(date: date)
+                dep.makeMemoRecordViewModel(date: date)
             }
             ).id(date)
         }
