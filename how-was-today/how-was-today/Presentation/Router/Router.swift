@@ -58,6 +58,7 @@ final class HowWasTodayRouter: ObservableObject {
         case todaySummary
         case inputSupplement
         case condition(date: Date)
+        case memo(date: Date)
     }
     
     enum Modal: Hashable, Identifiable {
@@ -104,15 +105,20 @@ extension HowWasTodayRouter: Router {
         let dep = self.dependencies
         switch route {
         case .todaySummary:
-            TodaySummaryView(viewModelFactory: self.dependencies.makeTodaySummaryViewModel)
+            TodaySummaryView(viewModelFactory: dep.makeTodaySummaryViewModel)
         case .inputSupplement:
-            SupplementInputView(viewModelFactory: dependencies.makeSupplementInputViewModel)
+            SupplementInputView(viewModelFactory: dep.makeSupplementInputViewModel)
         case .condition(let date):
             ConditionRecordView(
                 date: date,
                 viewModelFactory: { _ in
-                    dep.makeConditionRecordBottomSheetViewModel(date: date)
+                    dep.makeConditionRecordViewModel(date: date)
                 }
+            ).id(date)
+        case .memo(let date):
+            MemoRecordView(date: date, vmFactory: { _ in
+                dep.makeMemoRecordViewModel(date: date)
+            }
             ).id(date)
         }
     }
