@@ -36,20 +36,28 @@ struct RecentRecordSection: View {
             }
             // 날짜 네비게이션
             HStack {
-                Button(action: {}, label: {
+                Button(action: {
+                    viewModel.moveDay(by: -1)
+                    viewModel.refreshDailyRecord()
+                    viewModel.fetchDailyRecord()
+                }, label: {
                     Image(systemName: "chevron.left")
                         .foregroundColor(.gray)
                 })
                 
                 Spacer()
                 
-                Text("8월 3일(일), 오늘")
+                Text(viewModel.getRecordDate())
                     .font(.subheadline)
                     .fontWeight(.medium)
                 
                 Spacer()
                 
-                Button(action: {}, label: {
+                Button(action: {
+                    viewModel.moveDay(by: 1)
+                    viewModel.refreshDailyRecord()
+                    viewModel.fetchDailyRecord()
+                }, label: {
                     Image(systemName: "chevron.right")
                         .foregroundColor(.gray)
                 })

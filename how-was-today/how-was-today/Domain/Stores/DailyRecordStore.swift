@@ -17,6 +17,7 @@ protocol DailyRecordStore {
     func save(_ item: T, on date: Date)
     func delete(on date: Date)
     func key(from date: Date) -> String
+    func prefetch(center: Date, daysBefore: Int, daysAfter: Int)
 }
 
 extension DailyRecordStore {
@@ -30,4 +31,6 @@ extension DailyRecordStore {
     func key(from date: Date) -> String {
         date.toString(format: DailyRecord.dateFormat)
     }
+    
+    func prefetch(center: Date, daysBefore: Int, daysAfter: Int) {}
 }

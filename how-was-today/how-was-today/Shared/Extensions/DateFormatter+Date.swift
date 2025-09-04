@@ -17,6 +17,7 @@ extension DateFormatter {
 extension Date {
     func toString(format: String) -> String {
         let formatter = DateFormatter(format: format)
+        formatter.locale = Locale(identifier: "ko_KR")
         return formatter.string(from: self)
     }
 }

@@ -36,4 +36,13 @@ final class FakeDailyWeightLogRepository: DailyWeightLogRepository {
         if let e = nextDeleteError { nextDeleteError = nil; throw e }
         store.removeValue(forKey: date.toString(format: DailyRecord.dateFormat))
     }
+    
+    func fetchWeights(from start: Date, to end: Date) -> [String: Double] {
+        let s = start.toString(format: DailyRecord.dateFormat)
+        let e = end.toString(format: DailyRecord.dateFormat)
+        return Dictionary(
+            uniqueKeysWithValues: store.lazy
+                .filter { $0.key >= s && $0.key < e }
+        )
+    }
 }

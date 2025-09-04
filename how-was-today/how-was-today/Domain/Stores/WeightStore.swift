@@ -47,4 +47,30 @@ final class WeightStore: ObservableObject, DailyRecordStore {
             print("delete weight error \(error.localizedDescription)")
         }
     }
+    
+    func prefetch(center: Date, daysBefore: Int, daysAfter: Int) {
+        let (start, end) = computeRange(
+            center: center,
+            daysBefore: daysBefore,
+            daysAfter: daysAfter
+         )
+
+    }
+}
+
+extension Calendar {
+    func dayKey(_ date: Date) -> String {
+        let f = DateFormatter()
+        f.calendar = self
+        f.locale = Locale(identifier: "ko_KR")
+        f.dateFormat = "yyyy-MM-dd"
+        return f.string(from: startOfDay(for: date))
+    }
+    func start(_ date: Date) -> Date { startOfDay(for: date) }
+}
+
+func computeRange(center: Date, daysBefore: Int, daysAfter: Int, cal: Calendar = .current) -> (Date, Date) {
+    let s = cal.date(byAdding: .day, value: -daysBefore, to: cal.start(center))!
+    let e = cal.date(byAdding: .day, value: daysAfter + 1, to: cal.start(center))! // exclusive
+    return (s, e)
 }

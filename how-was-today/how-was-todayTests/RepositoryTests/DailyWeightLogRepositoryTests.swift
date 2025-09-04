@@ -152,9 +152,80 @@ final class DailyWeightLogRepositoryTests: XCTestCase {
         try repo.saveWeight(on: idDate("2025-08-09T00:00:00Z"), 57.0)
 
         XCTAssertEqual(repo.fetchLastestWeight(on: idDate("2025-08-04T00:00:00Z")), 54.2)
-        XCTAssertEqual(repo.fetchLastestWeight(on: idDate("2025-08-05T00:00:00Z")), 56.1) // boundary ==
+        XCTAssertEqual(repo.fetchLastestWeight(on: idDate("2025-08-05T00:00:00Z")), 56.1)
         XCTAssertEqual(repo.fetchLastestWeight(on: idDate("2025-08-08T00:00:00Z")), 56.1)
         XCTAssertEqual(repo.fetchLastestWeight(on: idDate("2025-08-10T00:00:00Z")), 57.0)
+    }
+    
+    func test_fetchWeights_empty_returnsEmpty() {
+        let fake = FakeRealmStorage<DailyWeightLogFactory>()
+        let repo = DailyWeightLogRepositoryImpl(storage: fake)
+        
+        let start = idDate("2025-08-01T00:00:00Z")
+        let end   = idDate("2025-08-31T00:00:00Z")
+        
+        let map = repo.fetchWeights(from: start, to: end)
+        XCTAssertTrue(map.isEmpty)
+    }
+
+    func test_fetchWeights_range_inclusiveStart_exclusiveEnd() {
+        // seed: 3, 5, 10일
+        let fake = FakeRealmStorage<DailyWeightLogFactory>()
+            .seed([
+                .init(id: "2025-08-03", weight: 55.0),
+                .init(id: "2025-08-05", weight: 56.5),
+                .init(id: "2025-08-10", weight: 58.3)
+            ])
+        let repo = DailyWeightLogRepositoryImpl(storage: fake)
+
+        // [5일, 10일) => 5일~9일 데이터 가져오기
+        let start = idDate("2025-08-05T00:00:00Z")
+        let end = idDate("2025-08-10T00:00:00Z")
+
+        let items = repo.fetchWeights(from: start, to: end)
+
+        XCTAssertEqual(items["2025-08-05"], 56.5)
+        XCTAssertNil(items["2025-08-10"])
+    }
+
+    func test_fetchWeights_singleDayRange_includesOnlyThatDay() {
+        let fake = FakeRealmStorage<DailyWeightLogFactory>()
+            .seed([
+                .init(id: "2025-08-05", weight: 56.5),
+                .init(id: "2025-08-06", weight: 57.0)
+            ])
+        let repo = DailyWeightLogRepositoryImpl(storage: fake)
+
+        // [5일, 6일) => 오직 5일만
+        let start = idDate("2025-08-05T00:00:00Z")
+        let end   = idDate("2025-08-06T00:00:00Z")
+
+        let items = repo.fetchWeights(from: start, to: end)
+        XCTAssertEqual(items.count, 1)
+        XCTAssertEqual(items.keys.first, "2025-08-05")
+        XCTAssertEqual(items["2025-08-05"], 56.5)
+        XCTAssertNil(items["2025-08-06"])
+    }
+
+    func test_fetchWeights_unsortedSeed_and_sparseDates() {
+        let fake = FakeRealmStorage<DailyWeightLogFactory>()
+            .seed([
+                .init(id: "2025-08-10", weight: 58.3),
+                .init(id: "2025-08-03", weight: 55.0),
+                .init(id: "2025-08-07", weight: 57.2)
+            ])
+        let repo = DailyWeightLogRepositoryImpl(storage: fake)
+
+        // [3일, 11일) => 3, 7, 10 포함
+        let start = idDate("2025-08-03T00:00:00Z")
+        let end   = idDate("2025-08-11T00:00:00Z")
+
+        let items = repo.fetchWeights(from: start, to: end)
+        let keys = Set(items.keys)
+        XCTAssertEqual(keys, Set(["2025-08-03", "2025-08-07", "2025-08-10"]))
+        XCTAssertEqual(items["2025-08-03"], 55.0)
+        XCTAssertEqual(items["2025-08-07"], 57.2)
+        XCTAssertEqual(items["2025-08-10"], 58.3)
     }
 }
 
