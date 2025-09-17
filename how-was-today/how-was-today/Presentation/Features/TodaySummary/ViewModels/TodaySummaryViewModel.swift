@@ -19,20 +19,19 @@ final class TodaySummaryViewModel: ObservableObject {
     @Published var dailyRecord: DailyRecord
 
     private let factory: SupplementUseCaseFactory
-    private let fetchDailyRecordUC: FetchDailyRecordUseCase
+    private let dailyRecordStore: DailyRecordStore
     
     init(
         factory: SupplementUseCaseFactory,
-        fetchDailyRecordUC: FetchDailyRecordUseCase
+        dailyRecordStore: DailyRecordStore
     ) {
         self.factory = factory
-        self.fetchDailyRecordUC = fetchDailyRecordUC
+        self.dailyRecordStore = dailyRecordStore
         
         let now = Date()
         self.date = now
         self.supplement = Supplement(date: now, names: [])
         self.dailyRecord = DailyRecord(date: now)
-        
         loadSupplement()
     }
 }
@@ -61,10 +60,34 @@ extension TodaySummaryViewModel {
 extension TodaySummaryViewModel {
     
     func refreshDailyRecord() {
-        fetchDailyRecordUC.refresh(date: date)
+        dailyRecordStore.refresh(date: date)
     }
     
     func fetchDailyRecord() {
-        dailyRecord = fetchDailyRecordUC.fetch(date: date)
+        dailyRecord = dailyRecordStore.record(for: date) ?? DailyRecord(date: date)
+    }
+    
+    func getRecordDate() -> String {
+        let base = date.toString(format: "M월 d일 (E)")
+        let calendar = Calendar.current
+        let today = calendar.startOfDay(for: Date())
+        let target = calendar.startOfDay(for: date)
+        let diff = calendar.dateComponents([.day], from: today, to: target).day ?? 0
+        switch diff {
+        case 0:
+            return base + ", 오늘"
+        case -1:
+            return base + ", 어제"
+        case 1:
+            return base + ", 내일"
+        default:
+            return base
+        }
+    }
+    
+    func moveDay(by value: Int) {
+        if let newDate = Calendar.current.date(byAdding: .day, value: value, to: date) {
+            date = newDate
+        }
     }
 }

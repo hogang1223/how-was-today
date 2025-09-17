@@ -25,6 +25,13 @@ final class AppDependencies: DependencyContainer {
     lazy var conditionStore: ConditionStore = ConditionStore(repo: repositories.dailyCondiotionRepository)
     lazy var memoStore: MemoStore = MemoStore(repo: repositories.dailyMemoRepository)
     
+    lazy var dailyRecordStore = DailyRecordStore(
+        weightRepo: repositories.dailyWeightRepository,
+        moodRepo: repositories.dailyMoodRepository,
+        memoRepo: repositories.dailyMemoRepository,
+        conditionRepo: repositories.dailyCondiotionRepository
+    )
+    
     init(repositories: RepositoryContainer) {
         self.repositories = repositories
     }
@@ -38,7 +45,7 @@ extension AppDependencies {
     func makeTodaySummaryViewModel() -> TodaySummaryViewModel {
         return TodaySummaryViewModel(
             factory: makeSupplementUseCaseFactory(),
-            fetchDailyRecordUC: makeFetchDailyRecordUseCase()
+            dailyRecordStore: dailyRecordStore
         )
     }
     /// SupplementInputView ViewModel 생성
